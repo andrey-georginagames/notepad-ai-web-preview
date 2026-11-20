@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Production UI 0.9.1</title>
+<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony 0.9.2</title>
 <style>
 :root{--bg:#fafaf7;--surface:#fff;--soft:#f0f3ef;--text:#202823;--muted:#66716b;--line:#e0e5df;--accent:#216d5b;--on:#fff;--tint:#e8f2ec;--danger:#b53636;--dangerbg:#fff0ed;--shadow:0 18px 60px #172e201a;--nav:72px;color-scheme:light}
 [data-theme=dark]{--bg:#151b18;--surface:#1c2420;--soft:#252f29;--text:#ecf1ed;--muted:#a3afa6;--line:#334037;--accent:#9bd5bd;--on:#14261d;--tint:#243c30;--danger:#ffa59d;--dangerbg:#3c2322;--shadow:0 18px 60px #0005;color-scheme:dark}
@@ -305,6 +305,118 @@ body{background:var(--bg);letter-spacing:0;font-family:Inter,-apple-system,Blink
 @media(min-width:700px){body{background:var(--soft)}.stage{padding:18px!important}.device{height:calc(100dvh - 36px)!important;max-height:920px!important;border:1px solid var(--line)!important;border-radius:22px!important;box-shadow:0 18px 55px #00000011!important}.stage{align-items:center;justify-content:center}}
 @media(max-width:365px){:root{--ui-inset:15px}.top,.top.nested{min-height:62px}.top h1{font-size:24px}.notes-tools{grid-template-columns:minmax(0,1fr) 42px 42px;gap:5px}.notes-action{width:42px;height:44px}.nav button{font-size:10px}.notes-tiles{gap:8px}.editor-content .editor-title{font-size:27px}}
 @media(prefers-reduced-motion:reduce){.note-card,.row,.nav button{transition:none!important}}
+
+/* GEORGINA GAMES — Notepad AI v0.9.2 Native Harmony R01
+   Review-only visual system. No schema, storage, AI API, or external dependency changes. */
+:root{--nh-gap:8px;--nh-inset:18px;--nh-icon:22px;--nh-tap:48px;--nh-top:60px;--nh-nav:70px;--ui-inset:var(--nh-inset);--nav:var(--nh-nav)}
+body{font-family:Roboto,"Segoe UI",Inter,-apple-system,BlinkMacSystemFont,sans-serif}
+.stage{background:var(--bg)}
+.screen{background:var(--bg)}
+.top,.top.nested{min-height:var(--nh-top);height:auto;padding:8px var(--nh-inset);gap:5px}
+.top h1{font-size:21px;font-weight:710;letter-spacing:-.3px}
+.top.nested h1{font-size:19px}
+.top .iconbtn{width:var(--nh-tap);height:var(--nh-tap);min-width:var(--nh-tap);border-radius:14px}
+.content{padding:6px var(--nh-inset) 24px}
+.nav{height:var(--nh-nav);padding:4px 8px max(5px,env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--line)}
+.nav button{min-height:52px;border-radius:12px;gap:2px;font-size:11px;font-weight:570}
+.nav button svg{width:22px;height:22px}
+.nav button[data-route="ai"] svg{color:var(--accent)}
+.nav button.active{color:var(--accent);font-weight:720}
+.nav button.active svg{background:var(--tint);border-radius:12px}
+.fab{width:56px;height:56px;border-radius:18px;right:var(--nh-inset);bottom:calc(var(--nh-nav) + 15px)}
+/* Notes: the search bar IS the heading — no empty top app bar or confusing overflow. */
+.screen:has(.notes-tools) > .top{display:none!important}
+.screen:has(.notes-tools) > .content{padding-top:15px}
+.notes-tools{grid-template-columns:minmax(0,1fr) 46px 46px;gap:5px;margin:0 0 7px}
+.notes-tools .searchbox{min-height:50px;height:50px;border-radius:16px;background:var(--surface);border:1px solid var(--line);padding:8px 13px;box-shadow:none}
+.notes-tools .searchbox .muted{font-size:14px;color:var(--muted)}
+.notes-action{width:46px;height:46px;border-radius:12px}
+.notes-action:focus-visible{outline:2px solid var(--accent)}
+.content:has(.notes-tools)>.chips{margin:0 0 4px;padding:0;gap:6px;min-height:40px;align-items:center;flex-wrap:nowrap;overflow-x:auto}
+.content:has(.notes-tools)>.chips .chip{min-height:36px;height:36px;padding:7px 12px;border-radius:12px;font-size:12.5px;white-space:nowrap}
+.notes-counter{margin:0 0 8px;min-height:19px;font-size:11px;color:var(--muted)}
+.notes-counter span:last-child{display:none}
+/* Compact card rhythm: content determines height, never large empty tiles. */
+.notes-comfortable{display:flex;flex-direction:column;gap:7px}
+.notes-comfortable .note-card{min-height:0;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
+.notes-comfortable .note-card .note-open{min-height:76px!important;padding:10px 2px 11px 0!important}
+.notes-comfortable .note-row-main{gap:2px;justify-content:center}
+.notes-comfortable .note-row-title{font-size:15px!important;font-weight:670!important;line-height:1.28}
+.notes-comfortable .note-row-preview{font-size:12.5px!important;line-height:1.33;min-height:0;max-height:35px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal}
+.notes-comfortable .note-row-preview:empty{display:none}
+.notes-comfortable .note-row-meta{margin-top:5px!important;min-height:16px!important;padding-right:37px}
+.notes-comfortable .note-accent{margin:12px 10px 12px 9px}
+.notes-comfortable .note-more{height:41px;min-height:41px;width:41px;min-width:41px;bottom:2px;right:2px;opacity:.8}
+.notes-tiles{gap:8px;align-items:stretch}
+.notes-tiles .note-card{border-radius:15px;min-height:128px}
+.notes-tiles .note-card .note-open{min-height:127px!important;padding:12px 5px 10px 0!important}
+.notes-tiles .note-row-main{gap:3px}
+.notes-tiles .note-row-meta{padding-right:31px!important;margin-top:5px!important}
+.notes-tiles .note-row-preview{font-size:12px!important;-webkit-line-clamp:3}
+.notes-compact .note-card{min-height:57px}
+.notes-compact .note-card .note-open{min-height:56px!important}
+/* Home: clear purpose, small quick actions, calm sections — not a giant stack of cards. */
+.screen:has(.harmony-home)>.top{min-height:60px}
+.screen:has(.harmony-home)>.top h1{font-size:21px;font-weight:760}
+.harmony-home{display:flex;flex-direction:column;gap:18px;padding-top:3px}
+.harmony-home .nh-subtitle{color:var(--muted);font-size:12.5px;line-height:1.4;margin:-2px 0 0}
+.nh-shortcuts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nh-shortcuts button{min-height:52px;border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:10px 13px;display:flex;align-items:center;gap:10px;font-weight:660;font-size:13px;text-align:left}
+.nh-shortcuts svg{width:21px;height:21px;color:var(--accent)}
+.nh-block{display:flex;flex-direction:column;gap:5px;min-width:0}
+.nh-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:37px}
+.nh-heading h2{font-size:17px;font-weight:730;line-height:1.3;letter-spacing:-.2px}
+.nh-heading .nh-sub{display:block;color:var(--muted);font-size:11px;font-weight:450;margin-top:2px}
+.nh-heading button{min-height:42px;padding:5px 8px;font-size:12px;color:var(--accent);font-weight:670}
+.nh-block .row{min-height:61px}
+.nh-block .note-card{border:0;border-bottom:1px solid var(--line);background:none;min-height:55px;border-radius:0}
+.nh-block .note-card .note-open{min-height:65px!important;padding:8px 0!important}
+.nh-block .note-card .note-more{min-height:42px;height:42px}
+.nh-block .note-row-title{font-size:14px!important}
+.nh-block .note-row-preview{font-size:12px!important}
+.nh-empty{padding:14px 11px;border-radius:12px;border:1px dashed var(--line);font-size:13px;color:var(--muted);line-height:1.45}
+.nh-note{font-size:12px;color:var(--muted);line-height:1.5}
+/* AI keeps its own identity, but not a giant decorative blank state. */
+.screen:has(.chatcontent)>.top{min-height:60px}
+.screen:has(.chatcontent)>.top h1{font-size:19px}
+.chatcontent{padding:6px var(--nh-inset) 16px}
+.nh-ai-intro{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--surface);border-radius:15px;padding:11px 13px;margin:10px 0 13px}
+.nh-ai-badge{width:40px;height:40px;flex:none;display:grid;place-items:center;background:var(--tint);border-radius:12px;color:var(--accent)}
+.nh-ai-badge svg{width:23px;height:23px}
+.nh-ai-title{font-size:14px;font-weight:710;line-height:1.3}
+.nh-ai-desc{font-size:11px;color:var(--muted);line-height:1.42;margin-top:3px}
+.nh-ai-demo{margin-left:auto;border-radius:8px;padding:4px 6px;background:var(--soft);font-size:9px;color:var(--muted);font-weight:700;letter-spacing:.2px}
+.nh-ai-intro+.empty{display:none}
+.chatcontent .suggestions{display:flex;flex-direction:column;gap:8px;margin:8px 0}
+.chatcontent .suggestions button{min-height:48px;text-align:left;padding:10px 13px;background:var(--surface);border-radius:12px;border:1px solid var(--line);font-size:13px;font-weight:550}
+.composerwrap{background:var(--surface);border-top:1px solid var(--line)}
+.composer{border-radius:15px;min-height:50px}
+.composerhint{font-size:10.5px;line-height:1.3}
+/* Notes editor: one clear back/title/actions row; text first, small metadata. */
+.screen:has(.editor-content)>.top{min-height:57px}
+.screen:has(.editor-content)>.top h1{font-size:18px;font-weight:650}
+.screen:has(.editor-content)>.top #savestatus:not(.bad){font-size:0;max-width:22px;width:22px;overflow:visible;white-space:nowrap}
+.screen:has(.editor-content)>.top #savestatus:not(.bad)::before{content:'✓';font-size:17px;color:var(--accent);font-weight:700}
+.editor-content{padding:17px var(--nh-inset) 70px}
+.editor-content .editor-date{font-size:11px;margin-bottom:8px}
+.editor-content .editor-title{font-size:28px;margin:2px 0 11px;min-height:37px}
+.editor-cat{margin:0 0 13px;min-height:34px;padding:5px 10px;font-size:11.5px}
+.editor-content .note-body,.editor-content .read-body{font-size:16.5px;line-height:29px;min-height:54dvh;background-size:100% 29px}
+.toolbar{padding:5px 8px max(5px,env(safe-area-inset-bottom));gap:2px}
+.toolbar button{min-height:44px;min-width:42px;font-size:10px}
+/* More and Settings aligned as one calm system page. */
+.more-group,.settings-group{padding:9px 0 13px;margin:0}
+.more-group + .more-group,.settings-group + .settings-group{border-top:1px solid var(--line)}
+.more-group h2,.settings-group h2{font-size:12px;font-weight:700;color:var(--accent);margin:6px 0 5px}
+.more-group .row,.settings-group .row{min-height:57px;padding:10px 1px}
+.more-group .row .desc,.settings-group .row .desc{font-size:12px}
+.more-group .row .title,.settings-group .row .title{font-size:14px}
+.more-advanced{margin:6px 0 22px}
+/* Calendar and all nested pages share baseline spacing, not a competing visual language. */
+.calendarhead{margin-top:6px}
+.sheet{border-radius:21px 21px 0 0}
+@media(max-width:350px){:root{--nh-inset:14px}.notes-tools{grid-template-columns:minmax(0,1fr) 42px 42px;gap:3px}.notes-action{width:42px;height:46px}.nh-shortcuts{gap:7px}.nh-shortcuts button{padding:8px}.nav button{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
 </style>
 </head>
@@ -1023,6 +1135,90 @@ render();
  render();
 })();
 
+</script>
+<script>
+/* Georgina Games Notepad AI v0.9.2 Native Harmony R01 — visual alignment only.
+   Approved scope: preserve data model, five tabs, one-tap note creation, offline text, AI DEMO. */
+(function(){
+ 'use strict';
+ const HARMONY_VERSION='0.9.2';
+ const tr=(ru,en)=>isRU()?ru:en;
+ const prevNotes=notes;
+ notes=function(){
+   let html=prevNotes();
+   // Search+view+sort is the top app bar; top label and ambiguous global dots are redundant.
+   const count=notesForList().filter(n=>noteFilter==='All'||noteFilter==='Pinned'&&n.pinned||n.category===noteFilter).length;
+   html=html.replace(/<div class="notes-counter">[\s\S]*?<\/div>/,
+      '<div class="notes-counter"><span>'+count+' '+tr('заметок','notes')+'</span></div>');
+   return html;
+ };
+ home=function(){
+   const openTasks=data.tasks.filter(t=>!t.trashed&&!t.done);
+   const todayItems=openTasks.filter(t=>t.date===today).slice(0,3);
+   const recent=activeNotes().slice(0,3);
+   const dateText=new Date().toLocaleDateString(isRU()?'ru-RU':'en-US',{weekday:'long',day:'numeric',month:'long'});
+   const heading=(title,action,routeName)=>'<div class="nh-heading"><h2>'+title+'</h2><button data-act="'+(routeName==='notes'||routeName==='ai'?'root':'goto')+'" data-route="'+routeName+'">'+action+' '+icon('chevron')+'</button></div>';
+   const html='<div class="harmony-home">'+
+    '<p class="nh-subtitle">'+tr('Заметки, задачи и AI — в одном месте','Notes, tasks and AI in one place')+'</p>'+
+    '<div class="nh-shortcuts">'+
+       '<button data-act="newtask">'+icon('checklist')+'<span>'+tr('Новая задача','New task')+'</span></button>'+
+       '<button data-act="root" data-route="ai">'+icon('ai')+'<span>'+tr('Спросить AI','Ask AI')+'</span></button></div>'+
+    '<section class="nh-block">'+heading(tr('Сегодня','Today'),tr('Все задачи','All tasks'),'tasks')+
+       '<div class="nh-note">'+E(dateText)+'</div>'+
+       (todayItems.length?todayItems.map(taskRow).join(''):'<p class="nh-empty">'+tr('На сегодня нет открытых задач.','No open tasks for today.')+'</p>')+'</section>'+
+    '<section class="nh-block">'+heading(tr('Недавние заметки','Recent notes'),tr('Все','All'),'notes')+
+       (recent.length?recent.map(noteRow).join(''):'<p class="nh-empty">'+tr('Пока нет заметок. Нажми +, чтобы записать первую мысль.','No notes yet. Tap + to capture your first thought.')+'</p>')+'</section>'+
+    '<section class="nh-block">'+heading(tr('Диалоги с AI','AI conversations'),tr('Открыть','Open'),'ai')+
+       (data.chats.length?data.chats.slice(0,1).map(chatRow).join(''):'<p class="nh-empty">'+tr('AI сейчас работает в демонстрационном режиме.','AI is currently running in demo mode.')+'</p>')+'</section>'+
+    '</div>';
+   return page('Notepad AI',html,ib('search','search','Search everything'),'home',
+      '<button class="fab" data-act="newnote" aria-label="'+E(tr('Новая заметка','New note'))+'">'+icon('plus')+'</button>');
+ };
+ const prevAI=aiPage;
+ aiPage=function(){
+   let html=prevAI();
+   const label=tr('AI помощник','AI Assistant');
+   html=html.replace('<h1>AI Assistant</h1>','<h1>'+E(label)+'</h1>');
+   const info='<div class="nh-ai-intro"><div class="nh-ai-badge">'+icon('ai')+'</div><div class="grow"><div class="nh-ai-title">'+E(label)+'</div><div class="nh-ai-desc">'+tr('Пока тестовые ответы. Личные заметки доступны только по твоему выбору.','Demo replies only. Notes are used only when you select them.')+'</div></div><span class="nh-ai-demo">DEMO</span></div>';
+   html=html.replace('<div class="content chatcontent" id="messages">', '<div class="content chatcontent" id="messages">'+(currentChat().messages.length?'':info));
+   // Product is approved as text-only: hide the misleading microphone demo action.
+   html=html.replace(/<button\b[^>]*\bdata-act="voice"[^>]*>[\s\S]*?<\/button>/g,'');
+   return html;
+ };
+ more=function(){
+   const group=(name,items)=>'<section class="more-group"><h2>'+name+'</h2>'+items.map(([ico,name,desc,routeName,act])=>row(ico,name,desc,act||'goto',act?'':'data-route="'+routeName+'"')).join('')+'</section>';
+   const body=group(tr('Организация','Organize'),[
+      ['tag',tr('Категории','Categories'),tr('Папки и порядок в заметках','Organize notes by category'),'','catmanager'],
+      ['note',tr('Текстовые шаблоны','Text templates'),tr('Дневник, список, план, идеи','Journal, checklist, plan, ideas'),'','templates'],
+      ['archive',tr('Архив','Archive'),tr('Сохранённые заметки','Notes you have set aside'),'archive'],
+      ['trash',tr('Корзина','Trash'),tr('Восстановить или удалить','Restore or delete notes'),'trash']])+
+    group(tr('Данные','Data'),[
+      ['sync',tr('Экспорт и резервная копия','Export and backup'),tr('JSON, TXT, Markdown и восстановление','JSON, TXT, Markdown and restore'),'data'],
+      ['settings',tr('Настройки','Settings'),tr('Тема, язык, вид заметок','Theme, language, note view'),'settings']])+
+    group(tr('Приложение','App'),[
+      ['help',tr('Помощь и информация','Help and about'),tr('О приложении и конфиденциальности','About and privacy'),'help']])+
+     '<details class="more-advanced"><summary>'+tr('Демо-инструменты (только для теста)','Demo tools (testing only)')+'</summary>'+row('user',tr('Демо-аккаунт','Demo account'),tr('Нет подключения','Not connected'),'goto','data-route="account"')+row('card',tr('Демо-подписка','Demo subscription'),tr('Без платежей','No purchases'),'goto','data-route="subscription"')+'</details>';
+   return page('More',body,'','more');
+ };
+ const prevEditor=editor;
+ editor=function(){
+   let html=prevEditor();
+   return html.replace('<h1></h1>','<h1>'+tr('Заметка','Note')+'</h1>');
+ };
+ // WebView system bars must follow the app theme, not Android's gray fallback.
+ const prevTheme=applyTheme;
+ applyTheme=function(){
+   prevTheme();
+   const dark=document.documentElement.dataset.theme==='dark';
+   if(window.NotepadAndroid&&typeof window.NotepadAndroid.setSystemBars==='function'){
+     try{window.NotepadAndroid.setSystemBars(dark);}catch(e){}
+   }
+ };
+ Object.assign(RU,{'Home':'Главная','Notes':'Заметки','Calendar':'Календарь','More':'Ещё'});
+ window.NotepadDemo.harmonyVersion=HARMONY_VERSION;
+ window.NotepadDemo.version=HARMONY_VERSION;
+ render();
+})();
 </script>
 </body>
 </html>
