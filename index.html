@@ -1445,7 +1445,7 @@ actions.uiquickview=()=>{const v=currentView094(),next=VIEW_KEYS094[(VIEW_KEYS09
 };
 // A new note created from a selected user category inherits it. + on All creates no category.
 newNote=function(){
- const id=uid('n'),cat=data.categories.includes(noteFilter)?noteFilter:'';
+ const id=uid('n'),cat=route.name==='notes'&&data.categories.includes(noteFilter)?noteFilter:'';
  const item={id,title:'',body:'',category:cat,created:now(),updated:now(),rev:1};
  if(!transaction(()=>data.notes.unshift(item)))return toast(tr094('Не удалось сохранить заметку.','Could not save the note.'));
  nav('editor',{id});editing=true;render();requestAnimationFrame(()=>$('#noteBody')?.focus());
