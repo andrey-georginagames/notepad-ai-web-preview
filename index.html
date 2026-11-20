@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony 0.9.2</title>
+<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony R02 0.9.3</title>
 <style>
 :root{--bg:#fafaf7;--surface:#fff;--soft:#f0f3ef;--text:#202823;--muted:#66716b;--line:#e0e5df;--accent:#216d5b;--on:#fff;--tint:#e8f2ec;--danger:#b53636;--dangerbg:#fff0ed;--shadow:0 18px 60px #172e201a;--nav:72px;color-scheme:light}
 [data-theme=dark]{--bg:#151b18;--surface:#1c2420;--soft:#252f29;--text:#ecf1ed;--muted:#a3afa6;--line:#334037;--accent:#9bd5bd;--on:#14261d;--tint:#243c30;--danger:#ffa59d;--dangerbg:#3c2322;--shadow:0 18px 60px #0005;color-scheme:dark}
@@ -418,6 +418,95 @@ body{font-family:Roboto,"Segoe UI",Inter,-apple-system,BlinkMacSystemFont,sans-s
 @media(max-width:350px){:root{--nh-inset:14px}.notes-tools{grid-template-columns:minmax(0,1fr) 42px 42px;gap:3px}.notes-action{width:42px;height:46px}.nh-shortcuts{gap:7px}.nh-shortcuts button{padding:8px}.nav button{font-size:10px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 
+/* Native Harmony R02 v0.9.3 — one visual system, approved purple concept.
+   All overrides are presentation only; local storage keys, note model and AI demo unchanged. */
+:root{--nh093-purple:#946ac6;--nh093-lavender:#cca9fa;--radius-surface:18px}
+[data-theme=dark]{--bg:#181321;--surface:#251d31;--soft:#2f253b;--text:#f4edf9;--muted:#b5a9c5;--line:#41354f;--accent:#d5a9ff;--on:#27152e;--tint:#433151;--paper:#1c1725;--paper-line:#382b43;--primary-ink:#f5eafa;--shadow:0 6px 18px #08031130;--danger:#ff9cae;--dangerbg:#3e2234}
+[data-theme=light]{--bg:#faf7fe;--surface:#fff;--soft:#f0e9f7;--text:#22172d;--muted:#776a80;--line:#e5daed;--accent:#7548a6;--on:#fff;--tint:#f0e2fa;--paper:#fffafd;--paper-line:#eee3f5;--primary-ink:#241b30;--shadow:0 5px 14px #4c286a16}
+body{font-family:Roboto,"Segoe UI",Inter,sans-serif}
+.stage,.screen{background:var(--bg)}
+.top{min-height:58px!important;padding:7px 16px!important;gap:6px}
+.top h1{font-size:20px!important;font-weight:730;letter-spacing:-.35px}
+.content{padding:8px 16px 26px}
+.nav{background:var(--bg);border-top:1px solid var(--line);height:70px}
+.nav button{border-radius:15px;min-width:0}
+.nav button.active svg{color:var(--accent);background:var(--tint)}
+.nav button.active{color:var(--accent)}
+.fab{height:53px;width:53px;bottom:calc(var(--nh-nav) + 13px);right:17px;border-radius:17px;box-shadow:0 6px 17px #08031144}
+/* Home: single search icon in top bar; no second search field or repeated shortcuts. */
+.screen:has(.nh093-home)>.top h1:before{content:'✎';display:inline-grid;place-items:center;width:36px;height:36px;margin-right:10px;border-radius:11px;background:var(--tint);color:var(--accent);font-size:25px;vertical-align:middle}
+.nh093-home{display:flex;flex-direction:column;gap:12px;padding:6px 0 12px}
+.nh093-card{padding:13px 13px 10px;background:var(--surface);border:1px solid var(--line);border-radius:19px;min-width:0}
+.nh093-cardheader{display:flex;gap:9px;align-items:center;justify-content:space-between;margin:0 0 9px}
+.nh093-cardheader h2{font-size:16px;font-weight:730;letter-spacing:-.22px;min-width:0}
+.nh093-cardheader button{min-height:42px;padding:0 4px;white-space:nowrap;display:flex;align-items:center;gap:1px;color:var(--accent);font-size:12px;font-weight:690}
+.nh093-dayline{font-size:12px;color:var(--muted);margin:-2px 0 9px}
+.nh093-home .row{min-height:47px;border-bottom:1px solid var(--line);padding:5px 0}
+.nh093-home .row:last-child,.nh093-home .note-card:last-child{border-bottom:0}
+.nh093-home .rowicon{width:26px}
+.nh093-home .task-title{text-align:left;min-height:44px}
+.nh093-home .task-title .title{font-size:13px}
+.nh093-home .note-card{border-bottom:1px solid var(--line);background:transparent;border-radius:0}
+.nh093-home .note-card .note-open{min-height:53px!important;padding:6px 1px!important}
+.nh093-home .note-accent{margin:10px 7px 10px 3px}
+.nh093-home .note-row-title{font-size:13px!important}
+.nh093-home .note-row-preview{font-size:11px!important}
+.nh093-home .note-row-meta{font-size:10px!important}
+.nh093-home .note-more{width:40px;min-width:40px;min-height:42px;opacity:.55}
+.nh093-home .nh093-empty{padding:12px 6px;font-size:12.5px;color:var(--muted)}
+.nh093-ai{background:linear-gradient(120deg,var(--surface),var(--tint));padding-bottom:12px}
+.nh093-ai-title{display:flex;align-items:center;gap:8px;min-height:30px;font-size:16px;font-weight:730}
+.nh093-ai-title svg{color:var(--accent)}
+.nh093-demo{border-radius:9px;background:var(--tint);color:var(--accent);padding:3px 7px;font-size:10px;letter-spacing:.2px}
+.nh093-ai-desc{font-size:12px;color:var(--muted);line-height:1.35;margin:4px 0 11px}
+.nh093-ai-action{height:44px;min-width:145px;border:1px solid var(--accent);color:var(--accent);border-radius:13px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:13px}
+/* Notes list follows same card/typography scale. Exactly one search control. */
+.screen:has(.notes-tools)>.top{display:none!important}
+.notes-tools{grid-template-columns:minmax(0,1fr) 48px 48px;gap:5px;margin:0 0 10px}
+.notes-tools .searchbox{min-height:49px;height:49px;border-radius:16px;background:var(--surface)}
+.notes-tools .notes-action{height:48px;width:48px;border-radius:13px;background:var(--surface);border:1px solid var(--line)}
+.content:has(.notes-tools)>.chips .chip{border-radius:999px;min-height:38px;padding:8px 12px}
+.content:has(.notes-tools)>.chips .chip.sel{background:var(--tint);color:var(--accent)}
+.notes-counter{margin:8px 0 10px;font-size:12px}
+.notes-comfortable{gap:9px}
+.notes-comfortable .note-card{border-radius:16px;background:var(--surface)}
+.notes-comfortable .note-card .note-open{min-height:76px!important}
+.notes-tiles .note-card{border-radius:16px;background:var(--surface)}
+/* Calendar: simple, consistently scaled, never cover date actions with FAB. */
+.screen:has(.calendargrid) .top{min-height:58px!important}
+.calendar-mode{margin:2px 0 8px;gap:6px}
+.calendar-mode button{min-height:40px;padding:7px 12px;border-radius:12px}
+.calendar-mode button.sel{background:var(--tint);color:var(--accent)}
+.calendar-mode button[data-act=calendartoday]{margin-left:auto}
+.calendarhead{margin:0 0 4px;min-height:47px}
+.calendarhead h2{font-size:18px;flex:1}
+.calendargrid{margin-bottom:0}
+.calendar-legend{margin:7px 0 9px}
+.cal-details{margin:12px 0 4px}
+.cal-details h2{font-size:16px}
+.cal-details h3{font-size:13px}
+.cal-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.cal-actions .btn{min-width:0;min-height:46px;white-space:normal;font-size:12px;padding:8px 6px}
+.screen:has(.calendargrid) .content.withfab{padding-bottom:26px}
+/* AI composer and headings use same spacing, with visible demo status. */
+.screen:has(.chatcontent)>.top h1{font-size:19px!important}
+.nh-ai-intro{border-radius:17px;background:var(--surface)}
+.nh-ai-demo{color:var(--accent);font-size:10px;background:var(--tint)}
+.chatcontent .suggestions button{border-radius:14px;min-height:48px}
+.composerwrap{background:var(--bg)}
+/* Settings and More simple row-based, never fake premium call-to-action. */
+.more-group h2,.settings-group h2{color:var(--accent)}
+.more-group .row,.settings-group .row{min-height:56px}
+.more-group .rowicon,.settings-group .rowicon{background:var(--tint);color:var(--accent)}
+.more-advanced{margin-bottom:22px}
+/* Editor readability */
+.screen:has(.editor-content) .top{min-height:56px!important}
+.screen:has(.editor-content)>.top h1{font-size:18px!important}
+.editor-content .editor-title{font-size:27px}
+.editor-content .note-body,.editor-content .read-body{font-size:16px;line-height:28px}
+@media(max-width:350px){.content{padding-left:13px;padding-right:13px}.nh093-card{padding:11px}.nh093-cardheader h2{font-size:15px}.cal-actions{gap:5px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -465,7 +554,7 @@ const paths={home:'m3 10 9-7 9 7v10h-6v-7H9v7H3Z',note:'M6 3h8l4 4v14H6ZM14 3v5h
 paths.grid='M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z';paths.sort='M3 6h18M3 12h13M3 18h8';paths.circle='M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0-18';function icon(k){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(paths[k]||paths.note)+'"/></svg>'}
 function ib(k,a,label,extra=''){return `<button class="iconbtn" data-act="${a}" aria-label="${E(label)}" title="${E(label)}" ${extra}>${icon(k)}</button>`}
 function btn(t,a,c='primary',extra=''){return `<button class="btn ${c}" data-act="${a}" ${extra}>${t}</button>`}
-function seed(){return {version:2,onboarded:false,theme:'light',font:'default',language:'English',prefs:{length:'Balanced',response:'App language',notifications:false,analytics:false},account:false,sync:false,plan:'Free',activeChat:'',operations:{},notes:[],tasks:[],chats:[],categories:[]}}
+function seed(){return {version:2,onboarded:false,theme:'dark',font:'default',language:'English',prefs:{length:'Balanced',response:'App language',notifications:false,analytics:false},account:false,sync:false,plan:'Free',activeChat:'',operations:{},notes:[],tasks:[],chats:[],categories:[]}}
 const KEY='notepad_ai_concept02_v1';const RECOVERY_KEY='notepad_ai_concept02_recovery_v1';let corruptRaw='',storageError='',storeBlocked=false;
 function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return seed();const v=JSON.parse(raw);if(v.version!==2||!Array.isArray(v.notes)||!Array.isArray(v.tasks)||!Array.isArray(v.chats)||!record(v.prefs)||!record(v.operations)||!Array.isArray(v.categories))throw new Error('Unrecognized prototype data');return v}catch(e){try{corruptRaw=localStorage.getItem(KEY)||''}catch{}storeBlocked=!!corruptRaw;storageError=storeBlocked?'Stored data could not be read. Your original data has not been overwritten.':'Browser storage is unavailable. Changes will stay in this session only.';return seed()}}
 let data=load();
@@ -1218,6 +1307,62 @@ render();
  window.NotepadDemo.harmonyVersion=HARMONY_VERSION;
  window.NotepadDemo.version=HARMONY_VERSION;
  render();
+})();
+</script>
+<script>
+/* Notepad AI v0.9.3 Native Harmony R02 — production-style UX prototype.
+   No new services, app-data migration, real AI, premium or billing. */
+(function(){
+'use strict';
+const NH_VERSION='0.9.3';
+const tr=(ru,en)=>isRU()?ru:en;
+const prevPage093=page;
+const prevHome093=home;
+home=function(){
+ const todayTasks=data.tasks.filter(t=>!t.trashed&&t.date===today).slice(0,3);
+ const recent=activeNotes().slice(0,3);
+ const dateString=new Date().toLocaleDateString(isRU()?'ru-RU':'en-US',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ const heading=(text,action,dest,root)=>'<div class="nh093-cardheader"><h2>'+text+'</h2><button data-act="'+(root?'root':'goto')+'" data-route="'+dest+'">'+action+' '+icon('chevron')+'</button></div>';
+ const taskContent=todayTasks.length?todayTasks.map(taskRow).join(''):'<div class="nh093-empty">'+tr('На сегодня нет задач. Можно создать новую.','No tasks for today. You can create one.')+'</div>';
+ const noteContent=recent.length?recent.map(noteRow).join(''):'<div class="nh093-empty">'+tr('Заметок пока нет. Нажми + для первой записи.','No notes yet. Tap + for your first one.')+'</div>';
+ const content='<div class="nh093-home">'+
+   '<section class="nh093-card">'+heading(tr('Сегодня','Today'),tr('Все задачи','All tasks'),'tasks',false)+'<div class="nh093-dayline">'+E(dateString)+'</div>'+taskContent+'</section>'+
+   '<section class="nh093-card">'+heading(tr('Недавние заметки','Recent notes'),tr('Все заметки','All notes'),'notes',true)+noteContent+'</section>'+
+   '<section class="nh093-card nh093-ai"><div class="nh093-ai-title">'+icon('ai')+'<span>'+tr('AI-помощник','AI Assistant')+'</span><span class="nh093-demo">DEMO</span></div><p class="nh093-ai-desc">'+tr('Помощь с текстами, идеями и планами. Пока демонстрационный режим.','Help with notes, ideas and plans. Demo mode only.')+'</p><button class="nh093-ai-action" data-act="root" data-route="ai">'+icon('chat')+tr('Открыть чат','Open chat')+'</button></section>'+
+   '</div>';
+ return page('Notepad AI',content,
+    ib('search','search',tr('Поиск по блокноту','Search notebook'))+
+    ib('settings','goto',tr('Настройки','Settings'),'data-route="settings"'),
+    'home','<button class="fab" data-act="newnote" aria-label="'+E(tr('Новая заметка','New note'))+'">'+icon('plus')+'</button>');
+};
+// One search bar in Notes is already implemented in the previous Harmony release.
+// Calendar offers two *labeled* create actions and therefore does not need a duplicate FAB.
+const prevCalendar093=calendar;
+calendar=function(){
+ let html=prevCalendar093();
+ html=html.replace(/<button class="fab" data-act="newtaskforday"[\s\S]*?<\/button>/,'');
+ // Calendar preferences remain in More -> Settings, not an extra gear in the date toolbar.
+ html=html.replace(/<button style="margin-left:auto" data-act="goto" data-route="calprefs"[\s\S]*?<\/button>/,'');
+ return html;
+};
+const prevAI093=aiPage;
+aiPage=function(){
+ let html=prevAI093();
+ // Visible, truthful demo label, including when an existing conversation is open.
+ if(!html.includes('nh-ai-demo')) html=html.replace('<h1>'+E(tr('AI помощник','AI Assistant'))+'</h1>', '<h1>'+E(tr('AI-помощник','AI Assistant'))+' · DEMO</h1>');
+ return html;
+};
+const prevTheme093=applyTheme;
+applyTheme=function(){
+ prevTheme093();
+ const dark=document.documentElement.dataset.theme==='dark';
+ const color=dark?'#181321':'#faf7fe';
+ const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',color);
+ // Existing Java bridge already handles native status/navigation bar colors.
+};
+window.NotepadDemo.version=NH_VERSION;
+window.NotepadDemo.harmonyVersion=NH_VERSION;
+render();
 })();
 </script>
 </body>
