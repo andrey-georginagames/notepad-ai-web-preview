@@ -544,6 +544,51 @@ body{font-family:Roboto,"Segoe UI",Inter,sans-serif}
 @media(max-width:350px){.n94-categorybar{gap:5px}.n94-categories{gap:5px}.n94-categories .chip{padding:8px 12px;font-size:12px}.n94-manage{min-width:40px;width:40px}}
 
 </style>
+<style id="v095-style">
+/* v0.9.5: only requested polish; original UI, content and persistence unchanged. */
+.note-more{min-width:44px!important;width:44px!important;min-height:44px!important;align-self:center!important;color:var(--text)!important;opacity:1!important;display:grid;place-items:center;border-radius:12px!important}
+.note-more svg{height:22px!important;width:22px!important;stroke-width:2.55!important}
+.note-more:hover,.note-more:focus-visible{background:var(--tint)!important}
+.notes-tiles .note-more{min-width:44px!important;width:44px!important;margin-top:4px;align-self:flex-start!important}
+.n94-manage svg{width:23px;height:23px;stroke-width:2.05}
+/* Compact view-order sheet: no giant preview cards and no tall option rows. */
+.v095-view-panel{padding:0 0 10px;max-width:100%}
+.v095-sheet-section{margin:8px 0 16px}
+.v095-sheet-label{font-size:12px;font-weight:700;color:var(--muted);margin:0 0 8px}
+.v095-segment{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;background:var(--soft);padding:4px;border:1px solid var(--line);border-radius:14px}
+.v095-segment button{min-height:48px;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 4px;font-size:12px;font-weight:640;border-radius:11px;white-space:nowrap}
+.v095-segment button svg{width:18px;height:18px}
+.v095-segment button[aria-pressed=true]{background:var(--accent);color:var(--on);box-shadow:0 2px 7px #00000016}
+.v095-direction{width:100%;display:flex;align-items:center;justify-content:space-between;min-height:48px;border:1px solid var(--line);padding:8px 13px;border-radius:12px;font-size:13px;font-weight:600}
+.v095-direction svg{height:18px;width:18px;color:var(--accent)}
+.v095-more-sort{border-top:1px solid var(--line);padding-top:8px;margin-top:10px}
+.v095-more-sort button{min-height:42px;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--accent);font-weight:650;width:100%}
+/* Short anchored note menus, no full-screen scrim for the primary/secondary menu. */
+.v095-popover{position:absolute;z-index:32;max-height:calc(100% - 18px);width:min(270px,calc(100% - 24px));overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--line);border-radius:15px;background:var(--surface);color:var(--text);box-shadow:0 12px 35px #00000030;padding:5px;box-sizing:border-box}
+.v095-menu-head{font-size:11px;color:var(--muted);font-weight:700;padding:7px 11px 5px;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v095-menu-item{display:flex;align-items:center;text-align:left;gap:10px;width:100%;min-height:43px;padding:8px 10px;border-radius:10px;font-size:13px;font-weight:580;line-height:1.25}
+.v095-menu-item:hover,.v095-menu-item:focus-visible{background:var(--soft)}
+.v095-menu-item svg{width:19px;height:19px;stroke-width:2.05;flex-shrink:0;color:var(--muted)}
+.v095-menu-item span{flex:1}
+.v095-menu-item.v095-danger{color:var(--danger)}.v095-menu-item.v095-danger svg{color:var(--danger)}
+.v095-menu-divider{height:1px;background:var(--line);margin:4px 8px}
+/* Swipe rails are only mounted into the long, one-column list modes. */
+.note-swipe-wrap{position:relative;min-width:0;overflow:hidden;border-radius:15px;isolation:isolate;touch-action:pan-y}
+.note-swipe-wrap>.note-card{position:relative;z-index:2;transform:translate3d(0,0,0);transition:transform .19s cubic-bezier(.2,.8,.25,1);will-change:transform}
+.note-swipe-wrap.v095-dragging>.note-card{transition:none}
+.note-swipe-rail{position:absolute;z-index:1;inset:0;display:flex;align-items:stretch;justify-content:space-between;pointer-events:none}
+.note-swipe-end{display:flex;align-items:stretch;justify-content:flex-end;gap:0;margin-left:auto}
+.note-swipe-rail>button,.note-swipe-end>button{min-width:56px;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:5px 7px;color:white;gap:4px;font-size:10px;font-weight:650;pointer-events:auto}
+.note-swipe-rail svg{width:22px;height:22px;stroke-width:2.2}
+.note-swipe-pin{background:#5475a7}
+.note-swipe-archive{background:#8764aa}
+.note-swipe-trash{background:#b94b63}
+.note-swipe-wrap.is-open-right>.note-card{transform:translate3d(64px,0,0)}
+.note-swipe-wrap.is-open-left>.note-card{transform:translate3d(-116px,0,0)}
+.note-swipe-wrap .note-more{z-index:3}
+@media(max-width:355px){.v095-segment button{font-size:11px;gap:3px}.v095-segment button svg{width:16px;height:16px}}
+@media(prefers-reduced-motion:reduce){.note-swipe-wrap>.note-card{transition:none}}
+</style>
 </head>
 <body>
 <main class="stage">
@@ -1526,6 +1571,245 @@ drawSheet=function(){oldDrawSecond094();if(sheet?.type==='category'||sheet?.type
  }};
 window.NotepadDemo.version=V094;
 window.NotepadDemo.categoryManagementVersion=V094;
+render();
+})();
+</script>
+<script>
+/* Georgina Games / Notepad AI Agent v0.9.5.
+   Changes: compact anchored menus, visible DEMO reminder, contrast, folder+,
+   view/order compact sheet, reversible swipe rails in single-column modes.
+   No provider SDKs; existing schema/version-2 records remain untouched. */
+(function(){
+'use strict';
+const V095='0.9.5';
+const tr095=(ru,en)=>isRU()?ru:en;
+const name095=n=>(n?.title||tr095('Без названия','Untitled note'));
+paths.folderplus='M3 6h7l2 2h9v12H3ZM12 15h7M15.5 11.5v7';
+paths.morevertical='M12 5h.01M12 12h.01M12 19h.01';
+const oldNotes095=notes;
+let openWrap095=null,drag095=null,menu095=null,menuAnchor095=null,ignoreClickUntil095=0;
+function closeSwipe095(except){
+ for(const w of document.querySelectorAll('.note-swipe-wrap.is-open-left,.note-swipe-wrap.is-open-right')){
+  if(w===except)continue;
+  w.classList.remove('is-open-left','is-open-right');
+ }
+ if(openWrap095!==except)openWrap095=except||null;
+}
+function swipeActions095(n){
+ const id=E(n.id),pin=n.pinned?tr095('Открепить','Unpin'):tr095('Закрепить','Pin');
+ return '<div class="note-swipe-rail"><button class="note-swipe-pin" data-v095-swipe="pin" data-id="'+id+'" aria-label="'+E(pin)+'">'+icon('pin')+'<span>'+E(pin)+'</span></button>'+ 
+ '<span class="note-swipe-end"><button class="note-swipe-archive" data-v095-swipe="archive" data-id="'+id+'" aria-label="'+E(tr095('В архив','Archive'))+'">'+icon('archive')+'<span>'+E(tr095('Архив','Archive'))+'</span></button>'+ 
+ '<button class="note-swipe-trash" data-v095-swipe="trash" data-id="'+id+'" aria-label="'+E(tr095('В корзину','Move to Trash'))+'">'+icon('trash')+'<span>'+E(tr095('Корзина','Trash'))+'</span></button></span></div>';
+}
+notes=function(){
+ let html=oldNotes095();
+ // The category manager opens the existing manager but has a clear folder+ glyph.
+ html=html.replace(/(<button class="n94-manage"[^>]*>)<svg[^>]*>[\s\S]*?<\/svg>(<\/button>)/,
+  (_,start,end)=>start+icon('folderplus')+end);
+ return html;
+};
+function closeMenu095(restore=false){
+ if(!menu095)return;
+ const a=menuAnchor095;
+ menu095.remove();menu095=null;menuAnchor095=null;
+ if(restore&&a?.isConnected)try{a.focus({preventScroll:true})}catch{}
+}
+function placeMenu095(panel,anchor){
+ const device=document.querySelector('.device')||document.body;
+ const dr=device.getBoundingClientRect(), ar=anchor.getBoundingClientRect();
+ const maxW=Math.max(200,Math.min(270,dr.width-22));
+ panel.style.width=maxW+'px';panel.style.left='8px';panel.style.top='8px';
+ device.append(panel);
+ const h=panel.offsetHeight;
+ const anchorY=ar.bottom-dr.top,anchorX=ar.right-dr.left;
+ const below=anchorY+6+h<=dr.height-10;
+ const y=below?anchorY+6:Math.max(8,ar.top-dr.top-h-6);
+ panel.style.top=Math.min(y,dr.height-h-8)+'px';
+ panel.style.left=Math.max(10,Math.min(anchorX-maxW,dr.width-maxW-10))+'px';
+}
+function popup095(id,anchor,more=false){
+ const n=note(id);if(!n||n.trashed)return;
+ closeMenu095(false);closeSwipe095();
+ const pin=n.pinned?tr095('Открепить','Unpin'):tr095('Закрепить','Pin');
+ const primary=[
+  ['pin',pin,'pinnote'],
+  ['tag',tr095('Категория','Category'),'category'],
+  ['bell',tr095('Напоминание · DEMO','Reminder · DEMO'),'reminder'],
+  ['copy',tr095('Дублировать','Duplicate'),'duplicatenote'],
+  ['more',tr095('Другие действия','More actions'),'more'],
+  ['trash',tr095('В корзину','Move to Trash'),'trashnote','danger']
+ ];
+ const secondary=[
+  ['back',tr095('Назад','Back'),'main'],
+  ['archive',tr095('В архив','Archive'),'archivenote'],
+  ['sun',tr095('Цвет заметки','Note color'),'notecolor'],
+  ['share',tr095('Поделиться текстом','Share text'),'sharetext'],
+  ['export',tr095('Экспорт TXT','Export TXT'),'exportnote'],
+  ['export',tr095('Экспорт Markdown','Export Markdown'),'exportmarkdown'],
+  ['checklist',tr095('Задача из текста','Task from text'),'notetotask'],
+  ['note',data.prefs.focusMode?tr095('Выключить фокус','Exit focus mode'):tr095('Режим фокуса','Focus mode'),'togglefocus']
+ ];
+ const items=more?secondary:primary;
+ const panel=document.createElement('div');panel.className='v095-popover';panel.setAttribute('role','menu');
+ panel.setAttribute('aria-label',tr095('Действия с заметкой','Note actions'));
+ panel.innerHTML='<div class="v095-menu-head">'+E(name095(n))+'</div>'+items.map(([ico,label,act,kind])=>
+  '<button class="v095-menu-item '+(kind==='danger'?'v095-danger':'')+'" role="menuitem" data-v095-action="'+E(act)+'" data-id="'+E(id)+'" aria-label="'+E(label)+'">'+icon(ico)+
+  '<span>'+E(label)+'</span>'+(act==='more'?icon('chevron'):'')+'</button>').join('');
+ panel.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-v095-action]');if(!btn)return;
+  e.preventDefault();e.stopPropagation();
+  const act=btn.dataset.v095Action;
+  if(act==='more'){popup095(id,anchor,true);return}
+  if(act==='main'){popup095(id,anchor,false);return}
+  closeMenu095();
+  if(act==='trashnote')return safeTrash095(id);
+  if(act==='archivenote')return safeArchive095(id);
+  if(act==='pinnote')return safePin095(id);
+  actions[act]?.({id});
+ });
+ menu095=panel;menuAnchor095=anchor;placeMenu095(panel,anchor);
+ requestAnimationFrame(()=>panel.querySelector('.v095-menu-item')?.focus({preventScroll:true}));
+}
+const oldMenu095=actions.notemenu;
+actions.notemenu=(d,button)=>{
+ if(selectMode&&route.name==='notes')return oldMenu095(d,button);
+ const anchor=button||document.querySelector('.note-more[data-id="'+CSS.escape(d.id)+'"]')||document.querySelector('.top .iconbtn');
+ if(anchor)popup095(d.id,anchor,false);else oldMenu095(d);
+};
+function undoToast095(text,id,before){
+ const el=$('#toast');if(!el)return toast(text);
+ el.textContent=text+' · ';el.hidden=false;el.style.pointerEvents='auto';
+ const b=document.createElement('button');b.textContent=tr095('Отменить','Undo');b.style='color:inherit;text-decoration:underline;font-weight:750;margin-left:5px;padding:4px;';
+ b.addEventListener('click',e=>{
+  e.stopPropagation();const n=note(id);if(!n)return;
+  if(transaction(()=>{n.trashed=before.trashed;n.archived=before.archived;n.pinned=before.pinned;n.updated=before.updated;})){
+   el.hidden=true;el.style.pointerEvents='none';render();
+  }
+ });
+ el.append(b);clearTimeout(toastTimer);toastTimer=setTimeout(()=>{el.hidden=true;el.style.pointerEvents='none'},5900);
+}
+function safePin095(id){const n=note(id);if(!n)return;
+ const before={trashed:n.trashed||false,archived:n.archived||false,pinned:n.pinned||false,updated:n.updated};
+ if(transaction(()=>{n.pinned=!n.pinned;n.updated=now()})){
+  const pinned=n.pinned;render();undoToast095(pinned?tr095('Заметка закреплена','Note pinned'):tr095('Заметка откреплена','Note unpinned'),id,before);
+ }
+}
+function safeArchive095(id){const n=note(id);if(!n)return;
+ const before={trashed:n.trashed||false,archived:n.archived||false,pinned:n.pinned||false,updated:n.updated};
+ if(transaction(()=>{n.archived=true;n.updated=now()})){
+  if(route.name==='editor')nav('notes',{},true);else render();
+  undoToast095(tr095('Перемещено в архив','Moved to Archive'),id,before);
+ }
+}
+function safeTrash095(id){const n=note(id);if(!n)return;
+ const before={trashed:n.trashed||false,archived:n.archived||false,pinned:n.pinned||false,updated:n.updated};
+ if(transaction(()=>{n.trashed=true;n.archived=false;n.updated=now()})){
+  closeSwipe095();closeMenu095();if(route.name==='editor')nav('notes',{},true);else render();
+  undoToast095(tr095('Перемещено в корзину','Moved to Trash'),id,before);
+ }
+}
+const oldDraw095=drawSheet;
+drawSheet=function(){
+ oldDraw095();
+ if(!sheet||sheet.type!=='viewprefs')return;
+ const panel=$('#overlay .sheet');if(!panel)return;
+ const v=['compact','comfortable','tiles'].includes(data.prefs.notesView)?data.prefs.notesView:'comfortable';
+ const sort=data.prefs.notesSort||'updated';
+ const base=sort.startsWith('created')?'created':sort.startsWith('title')?'title':'updated';
+ const reverse=['updated_asc','created_asc','title_desc'].includes(sort);
+ const label=base==='title'?(reverse?tr095('От Я до А','Z to A'):tr095('От А до Я','A to Z')):
+ (reverse?tr095('Сначала старые','Oldest first'):tr095('Сначала новые','Newest first'));
+ const views=[['compact','list',tr095('Компактно','Compact')],['comfortable','card',tr095('Карточки','Cards')],['tiles','grid',tr095('Сетка','Grid')]];
+ const sorts=[['updated','clock',tr095('Изменено','Modified')],['created','calendar',tr095('Создано','Created')],['title','sort',tr095('Название','Title')]];
+ const seg=(items,key)=>'<div class="v095-segment">'+items.map(([val,ico,text])=>'<button data-act="'+key+'" data-value="'+val+'" aria-pressed="'+(key==='setnotesview'?v===val:base===val)+'" aria-label="'+E(text)+'">'+icon(ico)+'<span>'+E(text)+'</span></button>').join('')+'</div>';
+ panel.classList.add('v095-view-panel');
+ panel.innerHTML='<div class="sheethead"><h2>'+tr095('Вид и порядок','View and order')+'</h2>'+ib('close','closesheet',tr095('Закрыть','Close'))+'</div>'+
+  '<div class="v095-sheet-section"><div class="v095-sheet-label">'+tr095('Отображение','Display')+'</div>'+seg(views,'setnotesview')+'</div>'+
+  '<div class="v095-sheet-section"><div class="v095-sheet-label">'+tr095('Сортировать по','Sort by')+'</div>'+seg(sorts,'selectsortbase')+'</div>'+
+  '<button class="v095-direction" data-act="sortdirection" aria-label="'+E(tr095('Изменить порядок','Reverse order'))+'"><span>'+E(label)+'</span>'+icon('sort')+'</button>'+
+  '<div class="v095-more-sort"><button data-act="notessort">'+tr095('Другие варианты сортировки','More sorting options')+icon('chevron')+'</button></div>';
+};
+function wrapNotes095(){
+ const existing=document.querySelector('.note-swipe-wrap');if(existing)return;
+}
+// Override Notes row generation only while Notes is being rendered. No changes to Home's rows.
+const priorNotes095=notes;
+notes=function(){
+ if(selectMode||data.prefs.notesView==='tiles')return priorNotes095();
+ const oldNoteRow=noteRow;
+ noteRow=(n,q)=>'<div class="note-swipe-wrap" data-swipe-id="'+E(n.id)+'">'+swipeActions095(n)+oldNoteRow(n,q)+'</div>';
+ try{return priorNotes095()}finally{noteRow=oldNoteRow}
+};
+const oldRender095=render;
+render=function(){closeMenu095();drag095=null;openWrap095=null;oldRender095();
+ // This replaces only the note-options glyph (not the bottom More tab glyph).
+ document.querySelectorAll('.note-more').forEach(button=>{
+  button.innerHTML=icon('morevertical');button.setAttribute('aria-label',tr095('Действия с заметкой','Note actions'));
+ });
+};
+document.addEventListener('pointerdown',e=>{
+ if(menu095&&!menu095.contains(e.target)&&!menuAnchor095?.contains(e.target))closeMenu095();
+ const wrap=e.target.closest('.note-swipe-wrap');
+ if(!wrap){closeSwipe095();drag095=null;return}
+ if(e.target.closest('.note-more,.note-swipe-rail,button[data-v095-swipe]')||selectMode||route.name!=='notes')return;
+ closeSwipe095(wrap);
+ drag095={wrap,id:wrap.dataset.swipeId,x:e.clientX,y:e.clientY,start:wrap.classList.contains('is-open-left')?-116:wrap.classList.contains('is-open-right')?64:0,moved:false};
+},{passive:true});
+document.addEventListener('pointermove',e=>{
+ if(!drag095||e.pointerType==='mouse'&&e.buttons!==1)return;
+ const dx=e.clientX-drag095.x,dy=e.clientY-drag095.y;
+ if(Math.abs(dx)<9&&Math.abs(dy)<9)return;
+ if(Math.abs(dy)>Math.abs(dx)*1.2&&!drag095.moved){drag095=null;return}
+ if(Math.abs(dx)<=Math.abs(dy)*1.15&&!drag095.moved)return;
+ drag095.moved=true;
+ const v=Math.max(-116,Math.min(64,drag095.start+dx));
+ drag095.wrap.classList.add('v095-dragging');
+ const card=drag095.wrap.querySelector(':scope > .note-card');if(card)card.style.transform='translate3d('+v+'px,0,0)';
+ if(e.cancelable)e.preventDefault();
+},{passive:false});
+document.addEventListener('pointerup',e=>{
+ const drag=drag095;drag095=null;if(!drag)return;
+ const card=drag.wrap.querySelector(':scope > .note-card');
+ if(card)card.style.transform='';drag.wrap.classList.remove('v095-dragging');
+ if(!drag.moved)return;
+ const dist=drag.start+e.clientX-drag.x;
+ drag.wrap.classList.remove('is-open-left','is-open-right');
+ if(dist>39)drag.wrap.classList.add('is-open-right');else if(dist< -45)drag.wrap.classList.add('is-open-left');
+ else{closeSwipe095();return}
+ openWrap095=drag.wrap;
+ ignoreClickUntil095=Date.now()+320;
+ blockTapUntil=Date.now()+600;
+},{passive:true});
+document.addEventListener('pointercancel',()=>{if(drag095){drag095.wrap.classList.remove('v095-dragging');drag095.wrap.querySelector(':scope>.note-card')?.style.removeProperty('transform');drag095=null;}},{passive:true});
+document.addEventListener('click',e=>{
+ const btn=e.target.closest('[data-v095-swipe]');if(!btn)return;
+ e.preventDefault();e.stopPropagation();const id=btn.dataset.id;
+ if(btn.dataset.v095Swipe==='pin')safePin095(id);
+ if(btn.dataset.v095Swipe==='archive')safeArchive095(id);
+ if(btn.dataset.v095Swipe==='trash')safeTrash095(id);
+},true);
+document.addEventListener('click',e=>{
+ const wrap=e.target.closest('.note-swipe-wrap');
+ if(!wrap||!wrap.classList.contains('is-open-left')&&!wrap.classList.contains('is-open-right'))return;
+ if(e.target.closest('.note-swipe-rail'))return;
+ if(Date.now()<ignoreClickUntil095){e.preventDefault();e.stopPropagation();return}
+ // The first tap on a revealed note closes its swipe actions, does not navigate.
+ e.preventDefault();e.stopPropagation();closeSwipe095();
+},true);
+document.addEventListener('keydown',e=>{
+ if(!menu095)return;
+ if(e.key==='Escape'){e.preventDefault();closeMenu095(true);return}
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+  e.preventDefault();const all=[...menu095.querySelectorAll('button')],i=all.indexOf(document.activeElement);
+  all[(i+(e.key==='ArrowDown'?1:-1)+all.length)%all.length]?.focus();
+ }
+});
+document.addEventListener('scroll',e=>{
+ if(menu095&&!menu095.contains(e.target))closeMenu095();
+ closeSwipe095();
+},true);
+window.NotepadDemo.version=V095;
+window.NotepadDemo.compactActionsVersion=V095;
 render();
 })();
 </script>
