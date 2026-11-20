@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Quiet Intelligence 0.8.1</title>
+<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Offline Productivity 0.9.0</title>
 <style>
 :root{--bg:#fafaf7;--surface:#fff;--soft:#f0f3ef;--text:#202823;--muted:#66716b;--line:#e0e5df;--accent:#216d5b;--on:#fff;--tint:#e8f2ec;--danger:#b53636;--dangerbg:#fff0ed;--shadow:0 18px 60px #172e201a;--nav:72px;color-scheme:light}
 [data-theme=dark]{--bg:#151b18;--surface:#1c2420;--soft:#252f29;--text:#ecf1ed;--muted:#a3afa6;--line:#334037;--accent:#9bd5bd;--on:#14261d;--tint:#243c30;--danger:#ffa59d;--dangerbg:#3c2322;--shadow:0 18px 60px #0005;color-scheme:dark}
@@ -484,7 +484,7 @@ function drawSheet(){if(!sheet)return;const s=sheet,n=note(s.id);let title='',ht
  if(s.type==='rename'){title='Conversation';html=`<div class="field"><label for="chatName">Title</label><input class="input" id="chatName" value="${E(chat(s.id)?.title)}" maxlength="120"></div>${btn('Rename','renamechat','primary full',`data-id="${E(s.id)}"`)}${btn('Delete conversation','deletechat','textbtn full danger',`data-id="${E(s.id)}"`)}`}
  if(s.type==='voice'){title='Voice to text · demo';html=`<p class="muted">Your keyboard’s microphone can dictate into the text field. No audio file is saved by this prototype.</p><div class="field"><label for="voiceText">Review transcript</label><textarea class="input" id="voiceText" rows="4" placeholder="Type or dictate a thought…">Remember to buy fresh bread tomorrow.</textarea></div>${btn('Use this text','usevoice','primary full')}`}
  if(s.type==='restorepreview'){title='Review backup';html=`<div class="notice"><strong>${s.backup.notes.length} text notes · ${s.backup.tasks.length} tasks · ${s.backup.chats.length} conversations</strong><br>Existing items are kept. New IDs preserve links between restored copies. Settings will not be replaced.</div>${s.backup.notes.slice(0,4).map(n=>row('note',n.title||'Untitled note',n.body.slice(0,70),'noop')).join('')}<div class="sheetfoot two">${btn('Cancel','closesheet','secondary')}${btn('Restore copies','confirmrestore','primary')}</div>`}
- if(s.type==='lab'){title='Explore the prototype';html=`<p class="muted mini">Jump to any screen or try the normal welcome flow. Controls below belong to the prototype, not the product.</p>${labGroups().map(([name,items])=>`<div class="lab-group"><h3>${name}</h3><div class="lab-grid">${items.map(([label,target])=>`<button data-act="labjump" data-target="${target}">${label}</button>`).join('')}</div></div>`).join('')}<div class="sep"></div><div class="stack">${btn('Replay welcome','replay','secondary full')}${btn('Reset demo data','resetask','secondary full danger')}</div><p class="meta" style="margin-top:18px">Concept 02 · v0.8.1 · local browser prototype<br>Real AI, auth, sync and billing are not connected.</p>`}
+ if(s.type==='lab'){title='Explore the prototype';html=`<p class="muted mini">Jump to any screen or try the normal welcome flow. Controls below belong to the prototype, not the product.</p>${labGroups().map(([name,items])=>`<div class="lab-group"><h3>${name}</h3><div class="lab-grid">${items.map(([label,target])=>`<button data-act="labjump" data-target="${target}">${label}</button>`).join('')}</div></div>`).join('')}<div class="sep"></div><div class="stack">${btn('Replay welcome','replay','secondary full')}${btn('Reset demo data','resetask','secondary full danger')}</div><p class="meta" style="margin-top:18px">Concept 02 · v0.9.0 · local browser prototype<br>Real AI, auth, sync and billing are not connected.</p>`}
  $('#overlay').innerHTML=L(`<section class="sheet" role="dialog" aria-modal="true" aria-label="${E(title)}"><div class="sheethead"><h2 ${s.type==='notemenu'||s.type==='storedmenu'?'data-no-i18n':''}>${E(title)}</h2>${ib('close','closesheet','Close dialog')}</div>${html}</section>`);$('#overlay').hidden=false;$('#app').setAttribute('inert','');
 }
 function labGroups(){return [['Start',[['Welcome','welcome'],['AI introduction','introai'],['Return & continue','introreturn'],['Optional sign-in','signin'],['Plans','paywall']]],['Everyday',[['Home','home'],['Notes','notes'],['Empty editor','newnote'],['Text note','editor'],['Checklist','checklist'],['Search','search']]],['Conversation → note',[['AI conversation','ai'],['New conversation','newchat'],['Chat history','history'],['Choose context','context'],['Save answer preview','savepreview'],['Resume from note','continue']]],['Notes & AI',[['Note actions','notemenu'],['Categories','category'],['Reminder','reminder'],['AI tools','noteai'],['Review AI changes','editpreview'],['Create task from AI','aiproposal']]],['Tasks & calendar',[['Tasks','tasks'],['New task','newtask'],['Task details','taskdetail'],['Calendar','calendar'],['Completed tasks','completed'],['Bulk archive preview','bulk']]],['Settings',[['More','more'],['Settings','settings'],['Appearance','appearance'],['Language','language'],['Notifications','notifications'],['AI preferences','aiprefs'],['Privacy','privacy'],['Account','account'],['Subscription','subscription'],['Help','help']]],['Data & recovery',[['Data & sync','data'],['Restore backup','restore'],['Conflict preview','conflict'],['Archive','archive'],['Trash','trash'],['Permanent delete','permanent'],['Delete account','deleteaccount']]],['States',[['Empty notes','emptynotes'],['AI quota','quota'],['Offline chat','offline'],['Save error','saveerror'],['Clear demo errors','clearflags']]]]}
@@ -528,7 +528,7 @@ function allText(){return data.notes.filter(n=>!n.trashed).map(n=>(n.title||'Unt
 // Backup format v3 is separate from the existing localStorage schema (version 2).
 // JSON backup is unencrypted; demo account and billing state are not restored.
 const BACKUP_FORMAT='georgina-notepad-concept02';
-function makeBackup(){return {format:BACKUP_FORMAT,backupVersion:3,sourceVersion:'0.8.1',created:now(),notes:data.notes,tasks:data.tasks,chats:data.chats,categories:data.categories,settings:{language:data.language,theme:data.theme,font:data.font,prefs:data.prefs}}}
+function makeBackup(){return {format:BACKUP_FORMAT,backupVersion:3,sourceVersion:'0.9.0',created:now(),notes:data.notes,tasks:data.tasks,chats:data.chats,categories:data.categories,settings:{language:data.language,theme:data.theme,font:data.font,prefs:data.prefs}}}
 function record(value){return value!==null&&typeof value==='object'&&!Array.isArray(value)}
 function parsePrototypeBackup(raw){
  if(typeof raw!=='string'||raw.length>12000000)throw Error('Backup is too large');
@@ -644,9 +644,9 @@ checktask:d=>{const t=task(d.id);if(t&&transaction(()=>t.done=!t.done))render()}
 chat:d=>{data.activeChat=d.id;persist();nav('ai',{message:d.message||''})},newchat:()=>newChat(),send,prompt:d=>{const c=currentChat();c.draft=d.text;persist();render();send()},selectcontext:()=>openSheet('selectcontext'),setcontext:d=>{currentChat().context=d.id;persist();closeSheet();render()},clearcontext:()=>{delete currentChat().context;persist();render()},saveanswer:d=>saveAnswer(d.message),savetarget:d=>{if($('#saveText'))sheet.text=$('#saveText').value;if($('#saveTitle'))sheet.title=$('#saveTitle').value;sheet.target=d.target==='new'?'':activeNotes()[0]?.id||'';sheet.targetRev=sheet.target?note(sheet.target)?.rev:null;if(d.target==='existing'&&!sheet.target)return toast('No existing notes yet.');drawSheet()},confirmsaveanswer:confirmSaveAnswer,confirmproposal:d=>{const m=currentChat().messages.find(m=>m.id===d.message);if(!m?.proposal)return;const r=applyTool(m.proposal);render();toast(r.message)},cancelproposal:d=>{const m=currentChat().messages.find(m=>m.id===d.message);if(m?.proposal?.status==='pending'){m.proposal.status='cancelled';persist();render()}},voice:()=>openSheet('voice'),usevoice:()=>{currentChat().draft=$('#voiceText').value;persist();closeSheet();render()},
 setweekstart:d=>{if(!['sunday','monday'].includes(d.value))return;if(transaction(()=>data.prefs.weekStart=d.value)){render();toast('Calendar settings saved')}},setdateformat:d=>{if(!['locale','iso','short'].includes(d.value))return;if(transaction(()=>data.prefs.dateFormat=d.value)){render();toast('Calendar settings saved')}},verifybackup:()=>{try{parsePrototypeBackup(JSON.stringify(makeBackup()));toast('Backup format valid')}catch{toast('Backup check failed')}},togglefocus:()=>{if(transaction(()=>data.prefs.focusMode=!data.prefs.focusMode)){closeSheet();render()}},notetotask:d=>{const n=note(d.id||route.id);if(!n)return;const input=$('#noteBody');let selected='';if(input&&!input.hidden&&input.selectionStart<input.selectionEnd)selected=input.value.slice(input.selectionStart,input.selectionEnd);if(!selected){const sel=window.getSelection?.();if(sel?.anchorNode&&$('#readBody')?.contains(sel.anchorNode))selected=sel.toString()}if(!selected.trim()){closeSheet();return toast('Select text in the note first')}const title=selected.trim().replace(/\s+/g,' ').slice(0,300);nav('task',{draftTitle:title,fromNote:n.id,date:calendarDay});toast('Task prepared for review')},setpaper:d=>{if(!['lined','clean','soft'].includes(d.value))return;if(transaction(()=>data.prefs.paperStyle=d.value)){render();toast('Paper style saved')}},settheme:d=>{data.theme=d.value;persist();render()},fontsize:d=>{data.font=d.value;persist();render()},languagechoice:d=>{data.language=d.value;persist();render()},notification:()=>{if(data.prefs.notifications){data.prefs.notifications=false;persist();render()}else openSheet('confirm',{title:'Allow reminders? · demo',text:'This previews the permission step. No system permission will be requested.',button:'Allow in demo',run:()=>{data.prefs.notifications=true;persist();closeSheet();render()}})},prefselect:d=>openSheet('pref',{key:d.key}),setpref:d=>{data.prefs[d.key]=d.value;persist();closeSheet();render()},togglesync:()=>{if(!data.account)return nav('signin');data.sync=!data.sync;persist();render();toast('Sync is simulated. No server connection.')},
 onboardnext:()=>{if((route.step||0)<2){route.step=(route.step||0)+1;render()}else nav('signin',{onboarding:true})},finishonboard:finishOnboard,demologin:()=>{data.account=true;persist();toast('Demo account selected. No Google login.');nav('paywall',{onboarding:route.onboarding})},skipaccount:()=>route.onboarding?nav('paywall',{onboarding:true}):back(),finishpaywall:()=>route.onboarding||!data.onboarded?finishOnboard():back(),selectplan:d=>{selectedPlan=d.value;render()},previewpurchase:()=>openSheet('confirm',{title:'Preview Pro · '+selectedPlan,text:'This switches the demonstration to a Pro screen. No purchase, price or trial is activated.',button:'Preview Pro state',run:()=>{data.plan='Pro demo';persist();closeSheet();finishOnboard();toast('Pro demo screen enabled. No payment.')}}),restorepurchases:()=>openSheet('info',{title:'Restore purchases',text:'No real purchases are connected to this prototype. In the app, this action would check your store account.'}),signout:()=>{data.account=false;data.sync=false;persist();render();toast('Signed out of the demo. Your notes remain.')},confirmaccountdelete:()=>{if($('#deleteConfirm')?.value!=='DELETE')return;data.account=false;data.sync=false;persist();nav('account');toast('Demo account removed. Local notes remain.')},
-info:d=>openSheet('info',{title:d.title,text:d.info}),policy:d=>openSheet('info',{title:d.kind,text:'This document is not finalized. This HTML is a local prototype with simulated AI, sign-in, sync and billing. Production terms and privacy disclosures require separate approval.'}),sharetext:async d=>{const n=note(d.id);if(!n)return;try{if(navigator.share)await navigator.share({title:n.title,text:n.body});else await copy(n.title+'\n\n'+n.body)}catch(e){if(e.name!=='AbortError')toast('Sharing is unavailable. Try Export text.')}},exportnote:d=>{const n=note(d.id);if(n)download(safeName(n.title)+'.txt',n.title+'\n\n'+n.body)},copycurrent:()=>{const n=note(route.id);if(n)copy(n.title+'\n\n'+n.body)},exportall:()=>download('notepad-notes.txt',allText()),backup:()=>download('notepad-concept02-v0.8.1-backup.json',JSON.stringify(makeBackup(),null,2),'application/json'),exportcorrupt:()=>download('notepad-recovery-original.txt',corruptRaw),
+info:d=>openSheet('info',{title:d.title,text:d.info}),policy:d=>openSheet('info',{title:d.kind,text:'This document is not finalized. This HTML is a local prototype with simulated AI, sign-in, sync and billing. Production terms and privacy disclosures require separate approval.'}),sharetext:async d=>{const n=note(d.id);if(!n)return;try{if(navigator.share)await navigator.share({title:n.title,text:n.body});else await copy(n.title+'\n\n'+n.body)}catch(e){if(e.name!=='AbortError')toast('Sharing is unavailable. Try Export text.')}},exportnote:d=>{const n=note(d.id);if(n)download(safeName(n.title)+'.txt',n.title+'\n\n'+n.body)},copycurrent:()=>{const n=note(route.id);if(n)copy(n.title+'\n\n'+n.body)},exportall:()=>download('notepad-notes.txt',allText()),backup:()=>download('notepad-concept02-v0.9.0-backup.json',JSON.stringify(makeBackup(),null,2),'application/json'),exportcorrupt:()=>download('notepad-recovery-original.txt',corruptRaw),
 savelocalrecovery:()=>{saveLocalRecovery();render()},
- exportlocalrecovery:()=>{const rec=recoveryInfo();if(!rec.valid)return toast('No valid local recovery point.');download('notepad-local-recovery-v0.8.1.json',rec.raw,'application/json')},
+ exportlocalrecovery:()=>{const rec=recoveryInfo();if(!rec.valid)return toast('No valid local recovery point.');download('notepad-local-recovery-v0.9.0.json',rec.raw,'application/json')},
  restorelocalrecovery:()=>{const rec=recoveryInfo();if(!rec.valid)return toast('No valid local recovery point.');if(storeBlocked)return toast('Original storage is unreadable. Export the recovery JSON before resetting.');openSheet('confirm',{title:'Restore local recovery point?',text:'Restore '+rec.notes+' notes, '+rec.tasks+' tasks and '+rec.chats+' conversations as additional copies? Existing items stay in place. Imported AI mutations remain cancelled.',button:'Restore copies',run:()=>{const live=recoveryInfo();if(!live.valid)return toast('Local recovery point is no longer available.');if(restoreBackupCopies(live.backup)){closeSheet();nav('notes',{},true);toast('Local copy restored as separate items.')}}})},
  checklinks:()=>{const {orphanTasks,orphanNotes,orphanChats}=inspectRelationships();openSheet('info',{title:'Check links',text:'Tasks with missing notes: '+orphanTasks+'\nNotes with missing source chats: '+orphanNotes+'\nChats with missing context: '+orphanChats+'\nNo records were changed. A link may be missing after deletion of its source.'})},
  samplebackup:()=>$('#backupText').value=JSON.stringify({version:2,notes:[{title:'A restored thought',body:'Take a walk. Write a little. Come back tomorrow.',category:'Personal'}]},null,2),reviewbackup:()=>{try{const backup=parsePrototypeBackup($('#backupText').value);openSheet('restorepreview',{backup})}catch{toast('Use a valid prototype backup with text notes.')}},confirmrestore:()=>{const backup=sheet?.backup;if(!backup)return;if(restoreBackupCopies(backup)){closeSheet();nav('notes',{},true);toast('Restored as separate copies.')}},conflictchoice:d=>openSheet('info',{title:'Conflict choice · demo',text:d.choice==='both'?'In the production flow, both versions would be kept. No data was changed in this visual demonstration.':'This previews choosing one version. No data was replaced in this demonstration.'}),
@@ -686,6 +686,176 @@ render();
 if(storageError)toast(storageError);
 // Explicit prototype test surface. No credentials or external integrations.
 window.NotepadDemo={openFromNative,androidBack,version:'0.8.1',validISODate,validLocalTime,makeBackup,parsePrototypeBackup,restoreBackupCopies,get state(){return data},get route(){return route},get flags(){return flags},get sheet(){return sheet},actions,nav,render,applyTool,proposal,demoResponse,labGroups,localDate,persist,seed,T,L};
+</script>
+<script>
+/* Georgina Games Notepad AI Agent 0.9.0 Offline Productivity
+   No dependencies, network calls, media attachments, accounts or AI API. */
+(function(){
+'use strict';
+const FEATURES_VERSION='0.9.0';
+const R={
+ 'Everyday tools':'Повседневные инструменты','Text templates':'Текстовые шаблоны',
+ 'Start a structured text note':'Создать заметку по шаблону','Manage categories':'Управление категориями',
+ 'Rename and organize note categories':'Переименовать категории заметок',
+ 'Task priority':'Приоритет задачи','High':'Высокий','Normal':'Обычный','Low':'Низкий',
+ 'Overdue':'Просроченные','Priority':'Приоритет',
+ 'Export tasks as CSV':'Экспорт задач в CSV','Task list for backup or spreadsheets':'Список задач для копии или таблицы',
+ 'Export selected notes':'Экспорт выбранных заметок','Export Markdown':'Экспорт Markdown',
+ 'Note statistics':'Статистика заметки','Select a template':'Выберите шаблон',
+ 'Daily journal':'Дневник','Meeting notes':'Заметки встречи',
+ 'Shopping list':'Список покупок','Weekly plan':'План на неделю',
+ 'Idea capture':'Запись идеи','Simple checklist':'Чек-лист',
+ 'Manage your categories':'Управление категориями',
+ 'Rename category':'Переименовать категорию','Delete category':'Удалить категорию',
+ 'Category name':'Название категории','Save name':'Сохранить название',
+ 'Choose a unique category name.':'Введите уникальное название категории.',
+ 'Category renamed.':'Категория переименована.',
+ 'Category removed.':'Категория удалена.',
+ 'Deleting this category leaves its notes uncategorized.':'При удалении категории заметки останутся без категории.',
+ 'No categories yet.':'Категорий пока нет.',
+ 'All changes stay on this device.':'Все изменения остаются на устройстве.',
+ 'Words':'Слов','Characters':'Символов','Checklist':'Чек-лист',
+ 'New note created from a text template.':'Заметка по шаблону создана.',
+ 'No notes selected.':'Заметки не выбраны.',
+ 'Your notes have not changed.':'Заметки не изменены.',
+ 'Keyboard shortcuts':'Команды клавиатуры',
+ 'New note: Alt+N · Search: Ctrl+K · Save: Ctrl+S':'Новая заметка: Alt+N · Поиск: Ctrl+K · Сохранить: Ctrl+S',
+ 'This is an offline preview. Reminders do not trigger device alarms.':'Это локальный прототип: напоминания не вызывают системный сигнал.',
+ 'Create a text note':'Создать текстовую заметку'
+};
+Object.assign(RU,R);
+const tx=(en,ru)=>isRU()?ru:en;
+const templates=[
+ {en:'Daily journal',ru:'Дневник',title:['Journal · ','Дневник · '],body:['Today I want to remember:\n\nWhat went well:\n\nWhat I learned:\n\nTomorrow:\n','Сегодня важно запомнить:\n\nЧто получилось:\n\nЧему научился:\n\nЗавтра:\n']},
+ {en:'Meeting notes',ru:'Заметки встречи',title:['Meeting notes · ','Встреча · '],body:['Topic:\nParticipants:\n\nKey points:\n• \n\nDecisions:\n• \n\nAction items:\n[ ] ','Тема:\nУчастники:\n\nГлавное:\n• \n\nРешения:\n• \n\nЗадачи:\n[ ] ']},
+ {en:'Shopping list',ru:'Список покупок',title:['Shopping list · ','Покупки · '],body:['[ ] Vegetables\n[ ] Fruit\n[ ] Bread\n[ ] Other','[ ] Овощи\n[ ] Фрукты\n[ ] Хлеб\n[ ] Другое']},
+ {en:'Weekly plan',ru:'План на неделю',title:['Weekly plan · ','План недели · '],body:['Monday:\n[ ] \nTuesday:\n[ ] \nWednesday:\n[ ] \nThursday:\n[ ] \nFriday:\n[ ] \nWeekend:\n[ ] ','Понедельник:\n[ ] \nВторник:\n[ ] \nСреда:\n[ ] \nЧетверг:\n[ ] \nПятница:\n[ ] \nВыходные:\n[ ] ']},
+ {en:'Idea capture',ru:'Запись идеи',title:['New idea · ','Новая идея · '],body:['The idea:\n\nWhy it matters:\n\nFirst step:\n[ ] ','Идея:\n\nПочему это важно:\n\nПервый шаг:\n[ ] ']},
+ {en:'Simple checklist',ru:'Чек-лист',title:['Checklist · ','Чек-лист · '],body:['[ ] First step\n[ ] Second step\n[ ] Third step','[ ] Первый шаг\n[ ] Второй шаг\n[ ] Третий шаг']}
+];
+const csvQuote=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
+function noteMetrics(body){
+ const text=String(body??'');const words=(text.trim().match(/\S+/gu)||[]).length;
+ const lines=text.split('\n');const checked=lines.filter(x=>/^\[[xX]\]\s?/.test(x)).length;
+ const checkCount=lines.filter(x=>/^\[[ xX]\]\s?/.test(x)).length;
+ return {words,chars:[...text].length,checked,checkCount};
+}
+function noteStatsMarkup(n){const x=noteMetrics(n.body);return '<div id="noteStats" class="meta offline-stats" aria-live="off">'+
+ E(tx('Words','Слов'))+': '+x.words+' · '+E(tx('Characters','Символов'))+': '+x.chars+
+ (x.checkCount?' · '+E(tx('Checklist','Чек-лист'))+': '+x.checked+'/'+x.checkCount:'')+'</div>';}
+function updateNoteStats(){const n=note(route.id),el=$('#noteStats');if(n&&el){const node=document.createElement('div');node.innerHTML=noteStatsMarkup(n);el.textContent=node.textContent;}}
+// Preserve the approved one-tap FAB. An attempted write must not create a ghost note.
+newNote=function(){const id=uid('n');const item={id,title:'',body:'',category:'',created:now(),updated:now(),rev:1};
+ if(!transaction(()=>data.notes.unshift(item))){toast(tx('Could not save a new note.','Не удалось сохранить заметку.'));return;}
+ nav('editor',{id});editing=true;render();requestAnimationFrame(()=>$('#noteBody')?.focus());};
+actions.newnote=newNote;
+// Non-destructive text templates: each creates a regular editable note. No separate format.
+actions.templates=()=>openSheet('offlineTemplates');
+actions.templatecreate=d=>{const t=templates[Number(d.index)];if(!t)return;const i=isRU()?1:0,id=uid('n');
+ const item={id,title:t.title[i]+localDate(),body:t.body[i],category:'',created:now(),updated:now(),rev:1};
+ if(!transaction(()=>data.notes.unshift(item)))return;
+ closeSheet();nav('editor',{id});editing=true;render();toast(T('New note created from a text template.'));};
+// Categories: rename is atomic across all existing notes; deletion needs explicit confirmation.
+actions.catmanager=()=>openSheet('offlineCategories');
+actions.catrename=d=>{if(!data.categories.includes(d.value))return;openSheet('offlineRenameCategory',{oldName:d.value});};
+actions.catcommit=()=>{const old=sheet?.oldName,newName=$('#offlineCategoryName')?.value.trim();
+ if(!old||!data.categories.includes(old)||!newName||newName.length>40||data.categories.some(c=>c!==old&&c.toLocaleLowerCase()===newName.toLocaleLowerCase())){toast(T('Choose a unique category name.'));return;}
+ if(transaction(()=>{data.categories=data.categories.map(x=>x===old?newName:x);data.notes.forEach(n=>{if(n.category===old)n.category=newName;});})){
+ if(noteFilter===old)noteFilter=newName;closeSheet();render();toast(T('Category renamed.'));}};
+actions.catdelete=d=>{const name=d.value;if(!data.categories.includes(name))return;
+ const used=data.notes.filter(n=>n.category===name).length;
+ openSheet('confirm',{title:T('Delete category'),text:name+'\n'+used+' '+tx('notes','заметок')+'\n'+T('Deleting this category leaves its notes uncategorized.'),
+ button:T('Delete category'),danger:true,run:()=>{if(transaction(()=>{data.categories=data.categories.filter(c=>c!==name);data.notes.forEach(n=>{if(n.category===name)n.category='';});})){
+ if(noteFilter===name)noteFilter='All';closeSheet();render();toast(T('Category removed.'));}}});};
+// Task priorities are an additive field; old tasks default to Normal on display.
+const prevTaskForm=taskForm;
+taskForm=function(){const current=task(route.id),pr=['High','Normal','Low'].includes(current?.priority)?current.priority:'Normal';let h=prevTaskForm();
+ const panel='<div class="field"><label for="taskPriority">'+T('Task priority')+'</label><select id="taskPriority" class="input">'+
+ ['High','Normal','Low'].map(v=>'<option value="'+v+'" '+(v===pr?'selected':'')+'>'+T(v)+'</option>').join('')+'</select></div>';
+ return h.replace('<div class="notice">Reminder timing',panel+'<div class="notice">Reminder timing');};
+actions.savetask=()=>{const title=$('#taskTitle')?.value.trim(),date=$('#taskDate')?.value,time=$('#taskTime')?.value;
+ const noteId=$('#taskNote')?.value||'',reminder=$('#taskReminder')?.value,repeat=$('#taskRepeat')?.value;
+ const priority=$('#taskPriority')?.value||'Normal';
+ if(!title||!validISODate(date)||!validLocalTime(time)||!['High','Normal','Low'].includes(priority)){toast(tx('Check the task title and date.','Проверьте задачу и дату.'));return;}
+ if(transaction(()=>{let t=task(route.id);if(t)Object.assign(t,{title,date,time,noteId,reminder,repeat,priority});else data.tasks.push({id:uid('t'),title,date,time,noteId,reminder,repeat,priority,done:false});})){
+ back();toast(T('Task saved.'));}};
+const prevTaskRow=taskRow;
+taskRow=function(t){let html=prevTaskRow(t);if(t.priority==='High')html=html.replace('<span class="small-icon">','<span class="badge offline-priority">'+T('High')+'</span><span class="small-icon">');
+ return html;};
+tasks=function(){const list=data.tasks.filter(t=>!t.trashed&&(taskFilter==='Completed'?t.done:taskFilter==='Today'?t.date===today&&!t.done:taskFilter==='Upcoming'?t.date>today&&!t.done:taskFilter==='Overdue'?t.date<today&&!t.done:taskFilter==='High'?!t.done&&t.priority==='High':!t.done));
+ const pri={High:0,Normal:1,Low:2};list.sort((a,b)=>String(a.date||'9999-12-31').localeCompare(String(b.date||'9999-12-31'))||(pri[a.priority||'Normal']??1)-(pri[b.priority||'Normal']??1)||String(a.time||'').localeCompare(String(b.time||'')));
+ const filters=['Open','Today','Upcoming','Overdue','High','Completed'];
+ const chips=filters.map(f=>'<button class="chip '+(taskFilter===f?'sel':'')+'" data-act="taskfilter" data-value="'+f+'">'+T(f)+'</button>').join('');
+ return page('Tasks','<div class="chips">'+chips+'</div>'+ (list.map(taskRow).join('')||empty('All clear','Tasks you create will appear here.','checklist',btn('New task','newtask','primary'))),ib('plus','newtask','New task'));};
+// Plain text/Markdown/CSV exports never modify data or leave the device.
+actions.exportmarkdown=d=>{const n=note(d.id||route.id);if(!n)return;
+ const title=n.title||T('Untitled note');download(safeName(title)+'.md','# '+title.replace(/\n/g,' ')+'\n\n'+n.body+'\n','text/markdown');};
+actions.exporttasks=()=>{const rows=[['Title','Date','Time','Status','Priority','Linked note']];
+ for(const t of data.tasks.filter(t=>!t.trashed))rows.push([t.title,t.date||'',t.time||'',t.done?'Done':'Open',t.priority||'Normal',note(t.noteId)?.title||'']);
+ download('notepad-tasks.csv','\ufeff'+rows.map(row=>row.map(csvQuote).join(',')).join('\r\n')+'\r\n','text/csv');};
+actions.exportselected=()=>{const picked=selectedNotes();if(!picked.length){toast(T('No notes selected.'));return;}
+ const output=picked.map(n=>(n.title||T('Untitled note'))+'\n'+'—'.repeat(28)+'\n'+n.body).join('\n\n\n');
+ download('notepad-selected-notes.txt',output);};
+const prevEditor=editor;
+editor=function(){const n=note(route.id);if(!n)return prevEditor();
+ return prevEditor().replace('<div id="savewarning">',noteStatsMarkup(n)+'<div id="savewarning">');};
+document.addEventListener('input',e=>{if(e.target?.id==='noteBody')updateNoteStats();});
+// Text-first tools tucked under existing contextual menus rather than extra tabs.
+const prevMore=more;
+more=function(){const h=prevMore();const tools='<section class="more-group"><h2>'+T('Everyday tools')+'</h2>'+
+ row('note','Text templates','Start a structured text note','templates')+
+ row('tag','Manage categories','Rename and organize note categories','catmanager')+
+ row('export','Export tasks as CSV','Task list for backup or spreadsheets','exporttasks')+
+ '<p class="meta" style="margin:12px 0">'+T('New note: Alt+N · Search: Ctrl+K · Save: Ctrl+S')+'</p></section>';
+ return h.replace('<details class="more-advanced">',tools+'<details class="more-advanced">');};
+const prevDrawSheet=drawSheet;
+drawSheet=function(){const s=sheet;if(!s)return;
+ if(['offlineTemplates','offlineCategories','offlineRenameCategory'].includes(s.type)){
+  let title='',body='';
+  if(s.type==='offlineTemplates'){
+   title=T('Select a template');body='<p class="muted mini">'+T('All changes stay on this device.')+'</p>'+
+   templates.map((t,i)=>row('note',isRU()?t.ru:t.en,tx('Editable plain text note','Обычная редактируемая заметка'),'templatecreate','data-index="'+i+'"')).join('');
+  }
+  if(s.type==='offlineCategories'){
+   title=T('Manage categories');body='<p class="muted mini">'+T('All changes stay on this device.')+'</p>'+
+   (data.categories.length?data.categories.map(name=>'<div class="row"><span class="grow" data-no-i18n>'+E(name)+'</span>'+
+   '<button class="textbtn" data-act="catrename" data-value="'+E(name)+'">'+T('Rename category')+'</button>'+
+   '<button class="textbtn danger" data-act="catdelete" data-value="'+E(name)+'" aria-label="'+E(T('Delete category'))+' '+E(name)+'">'+icon('trash')+'</button></div>').join(''):'<p>'+T('No categories yet.')+'</p>');
+  }
+  if(s.type==='offlineRenameCategory'){
+   title=T('Rename category');body='<div class="field"><label for="offlineCategoryName">'+T('Category name')+'</label>'+
+    '<input id="offlineCategoryName" class="input" value="'+E(s.oldName)+'" maxlength="40"></div>'+btn(T('Save name'),'catcommit','primary full');
+  }
+  $('#overlay').innerHTML=L('<section class="sheet" role="dialog" aria-modal="true" aria-label="'+E(title)+'"><div class="sheethead"><h2>'+E(title)+'</h2>'+ib('close','closesheet','Close dialog')+'</div>'+body+'</section>');
+  $('#overlay').hidden=false;$('#app').setAttribute('inert','');return;
+ }
+ prevDrawSheet();
+ const panel=$('#overlay .sheet');if(!panel)return;
+ if(s.type==='notesoptions')panel.insertAdjacentHTML('beforeend',L(row('note','Text templates','Start a structured text note','templates')+row('tag','Manage categories','Rename and organize note categories','catmanager')));
+ if(s.type==='category')panel.insertAdjacentHTML('beforeend',L(row('tag','Manage categories','Rename categories','catmanager')));
+ if(s.type==='notemenu')panel.insertAdjacentHTML('beforeend',L(row('export','Export Markdown','Text-only .md file','exportmarkdown','data-id="'+E(s.id)+'"')));
+ if(s.type==='batchmenu')panel.insertAdjacentHTML('beforeend',L(row('export','Export selected notes','Text-only .txt file','exportselected')));
+};
+// Physical keyboard only; native Android soft keyboard is left unchanged.
+document.addEventListener('keydown',e=>{
+ if(sheet||e.defaultPrevented||e.isComposing)return;
+ const typingTarget=e.target?.closest?.('input,textarea,[contenteditable]');
+ if(e.altKey&&!e.ctrlKey&&!e.metaKey&&e.key.toLowerCase()==='n'){
+  e.preventDefault();newNote();return;
+ }
+ if((e.ctrlKey||e.metaKey)&&!e.altKey&&e.key.toLowerCase()==='k'){
+  e.preventDefault();searchFilter='All';searchQuery='';nav('search');requestAnimationFrame(()=>$('#searchInput')?.focus());return;
+ }
+ if((e.ctrlKey||e.metaKey)&&!e.altKey&&e.key.toLowerCase()==='s'){
+  e.preventDefault();if(route.name==='editor')saveEditorCursor();
+  toast(persist()?T('Saved on this device'):T('Not saved'));return;
+ }
+},true);
+// Keep an explicit test surface for no-service features, not a remote SDK.
+Object.assign(window.NotepadDemo,{version:FEATURES_VERSION,offlineFeatureSet:'templates/categories/task-priority/stats/exports/shortcuts',templates,noteMetrics});
+render();
+})();
+
 </script>
 </body>
 </html>
