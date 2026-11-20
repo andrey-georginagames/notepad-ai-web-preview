@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony R02 0.9.3</title>
+<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony R03 0.9.4</title>
 <style>
 :root{--bg:#fafaf7;--surface:#fff;--soft:#f0f3ef;--text:#202823;--muted:#66716b;--line:#e0e5df;--accent:#216d5b;--on:#fff;--tint:#e8f2ec;--danger:#b53636;--dangerbg:#fff0ed;--shadow:0 18px 60px #172e201a;--nav:72px;color-scheme:light}
 [data-theme=dark]{--bg:#151b18;--surface:#1c2420;--soft:#252f29;--text:#ecf1ed;--muted:#a3afa6;--line:#334037;--accent:#9bd5bd;--on:#14261d;--tint:#243c30;--danger:#ffa59d;--dangerbg:#3c2322;--shadow:0 18px 60px #0005;color-scheme:dark}
@@ -508,6 +508,42 @@ body{font-family:Roboto,"Segoe UI",Inter,sans-serif}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 </style>
+<style>
+
+/* Native Harmony R03 v0.9.4: one-line category navigation and explicit 3-step views. */
+.n94-categorybar{display:flex;align-items:center;gap:8px;max-width:100%;min-width:0;margin:7px 0 12px;position:relative}
+.n94-categories{display:flex;align-items:center;flex:1;min-width:0;gap:7px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;white-space:nowrap;padding:2px 1px 4px;-webkit-overflow-scrolling:touch}
+.n94-categories::-webkit-scrollbar{display:none}
+.n94-categories .chip{flex:none;scroll-snap-align:start;min-height:40px;padding:8px 15px;font-size:13px;border:1px solid var(--line);border-radius:22px}
+.n94-categories .chip.sel{border-color:var(--accent);background:var(--accent);color:var(--on)}
+.n94-manage{height:43px;width:43px;min-width:43px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--line);border-radius:13px;color:var(--accent);box-shadow:-8px 0 12px var(--bg)}
+.n94-manage svg{width:21px;height:21px}
+.n94-categories .chip:focus-visible,.n94-manage:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.n94-manage-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;border-bottom:1px solid var(--line);min-height:58px;padding:8px 0}
+.n94-manage-row:last-child{border-bottom:0}.n94-manage-row .n94-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:550;font-size:14px}
+.n94-manage-row .n94-name small{font-size:12px;color:var(--muted);font-weight:400}
+.n94-row-actions{display:flex;align-items:center;gap:0;justify-content:flex-end}
+.n94-row-actions button{width:37px;height:42px;display:inline-flex;align-items:center;justify-content:center;border-radius:10px;color:var(--muted);font-size:18px}
+.n94-row-actions button:disabled{opacity:.23}.n94-row-actions button svg{width:18px;height:18px}
+.n94-manager-help{margin:8px 0 18px;font-size:13px;line-height:1.5;color:var(--muted)}
+.n94-manager-actions{display:grid;gap:8px;margin:18px 0 12px}
+.n94-manager-system{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:10px 13px;margin-bottom:9px}
+.n94-manager-system>div{display:flex;justify-content:space-between;padding:4px 0;color:var(--muted);font-size:13px}
+.n94-manager-system strong{color:var(--text)}
+.n94-manager-help strong{color:var(--text)}
+.n94-compact-label{font-size:11px;color:var(--muted);margin:0 0 6px}
+.notes-compact{display:grid;gap:3px}
+.notes-compact .note-card{min-height:60px;border-radius:10px}
+.notes-compact .note-card .note-open{min-height:58px;padding:9px 2px!important}
+.notes-compact .note-row-title{font-size:14px!important;line-height:1.25}
+.notes-compact .note-row-preview{display:none}
+.notes-compact .note-row-meta{display:block;font-size:11px!important;margin-top:3px!important}
+.notes-compact .note-accent{margin:8px 10px 8px 8px}
+.notes-compact .note-more{min-width:38px;width:38px;height:38px;position:absolute;right:1px;bottom:2px}
+.notes-compact .note-row-meta{padding-right:38px}
+@media(max-width:350px){.n94-categorybar{gap:5px}.n94-categories{gap:5px}.n94-categories .chip{padding:8px 12px;font-size:12px}.n94-manage{min-width:40px;width:40px}}
+
+</style>
 </head>
 <body>
 <main class="stage">
@@ -554,7 +590,7 @@ const paths={home:'m3 10 9-7 9 7v10h-6v-7H9v7H3Z',note:'M6 3h8l4 4v14H6ZM14 3v5h
 paths.grid='M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z';paths.sort='M3 6h18M3 12h13M3 18h8';paths.circle='M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0-18';function icon(k){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(paths[k]||paths.note)+'"/></svg>'}
 function ib(k,a,label,extra=''){return `<button class="iconbtn" data-act="${a}" aria-label="${E(label)}" title="${E(label)}" ${extra}>${icon(k)}</button>`}
 function btn(t,a,c='primary',extra=''){return `<button class="btn ${c}" data-act="${a}" ${extra}>${t}</button>`}
-function seed(){return {version:2,onboarded:false,theme:'dark',font:'default',language:'English',prefs:{length:'Balanced',response:'App language',notifications:false,analytics:false},account:false,sync:false,plan:'Free',activeChat:'',operations:{},notes:[],tasks:[],chats:[],categories:[]}}
+function seed(){return {version:2,onboarded:false,theme:'dark',font:'default',language:'English',prefs:{length:'Balanced',response:'App language',notifications:false,analytics:false},account:false,sync:false,plan:'Free',activeChat:'',operations:{},notes:[],tasks:[],chats:[],categories:['Personal','Work','Study','Shopping']}}
 const KEY='notepad_ai_concept02_v1';const RECOVERY_KEY='notepad_ai_concept02_recovery_v1';let corruptRaw='',storageError='',storeBlocked=false;
 function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return seed();const v=JSON.parse(raw);if(v.version!==2||!Array.isArray(v.notes)||!Array.isArray(v.tasks)||!Array.isArray(v.chats)||!record(v.prefs)||!record(v.operations)||!Array.isArray(v.categories))throw new Error('Unrecognized prototype data');return v}catch(e){try{corruptRaw=localStorage.getItem(KEY)||''}catch{}storeBlocked=!!corruptRaw;storageError=storeBlocked?'Stored data could not be read. Your original data has not been overwritten.':'Browser storage is unavailable. Changes will stay in this session only.';return seed()}}
 let data=load();
@@ -615,7 +651,7 @@ function empty(title,desc,k='note',action=''){return `<div class="empty"><div cl
 function row(k,title,desc,act,extra='',end=''){return `<button class="row" ${["note","storedmenu","setcontext","chat","noop"].includes(act)?"data-no-i18n":""} data-act="${act}" ${extra}><span class="rowicon">${icon(k)}</span><span class="grow"><span class="title">${E(title)}</span>${desc?`<span class="desc">${E(desc)}</span>`:''}</span>${end||`<span class="small-icon">${icon('chevron')}</span>`}</button>`}
 function section(title,action,content){return `<section class="section"><div class="sectionhead"><h2>${title}</h2>${action}</div>${content}</section>`}
 function noteRow(n,query=''){
- const title=n.title||T('Untitled note'),preview=snippetNear(n.body,query),meta=[n.category,n.day?dateLabel(n.day):formatUpdated(n)].filter(Boolean).join(' · ');
+ const title=n.title||T('Untitled note'),preview=snippetNear(n.body,query),meta=[n.category?T(n.category):'',n.day?dateLabel(n.day):formatUpdated(n)].filter(Boolean).join(' · ');
  const selected=route.name==='notes'&&selection.has(n.id);
  return `<div class="note-card ${selected?'is-selected':''}" data-noteid="${E(n.id)}" data-color="${safeColor(n)}">${accentStrip(n)}<button class="row note-row note-open" data-act="note" data-id="${E(n.id)}" data-match="${E(query)}" aria-label="${E(title)}" aria-pressed="${route.name==='notes'&&selectMode?selected:false}"><span class="rowicon">${route.name==='notes'&&selectMode?icon(selected?'check':'circle'):''}</span><span class="note-row-main"><span class="note-row-title" data-no-i18n>${highlightText(title,query)}</span><span class="note-row-preview" data-no-i18n>${highlightText(preview,query)}</span><span class="note-row-meta"><span class="tagname" data-no-i18n>${E(meta||T('No category'))}</span></span></span>${n.pinned?`<span class="small-icon">${icon('pin')}</span>`:''}</button><button class="note-more" data-act="notemenu" data-id="${E(n.id)}" aria-label="${E(T('Note options'))}" title="${E(T('Note options'))}">${icon('more')}</button></div>`;
 }
@@ -650,7 +686,7 @@ function notes(){
  return page('Notes',`<button class="searchbox full" data-act="search" data-filter="Notes">${icon('search')}<span class="muted">${T('Search notes')}</span></button><div class="chips">${tags.map(f=>`<button class="chip ${noteFilter===f?'sel':''}" data-act="notefilter" data-value="${E(f)}">${E(T(f))}</button>`).join('')}</div>${layout}<div class="notes-${view}">${ns.slice(0,notesListLimit).map(n=>noteRow(n)).join('')||empty('No notes here','Start a note or choose another category.')}${ns.length>notesListLimit?`<div class="loadmore"><span class="meta">${E(T('Notes shown'))}: ${notesListLimit} / ${ns.length}</span>${btn('Load more notes','loadmorenotes','secondary full')}</div>`:''}</div>`,ib('more','notesoptions','Notes options'),'notes',foot);
 }
 function bodyPreview(n){return n.body.split('\n').map((line,i)=>{const m=line.match(/^\[([ xX])\]\s?(.*)/);if(!m)return `<p data-act="editbody">${highlightText(line,route.match)||'&nbsp;'}</p>`;const done=m[1]!==' ';if(done&&!data.prefs.showCompleted)return '';return `<div class="checkline ${done?'complete':''}"><button class="check square ${done?'checked':''}" data-act="toggleline" data-id="${E(n.id)}" data-index="${i}" aria-label="${done?'Reopen':'Complete'} checklist item">${done?icon('check'):''}</button><span style="${done?'text-decoration:line-through;color:var(--muted)':''}" data-act="editbody">${highlightText(m[2],route.match)}</span></div>`}).join('')}
-function editor(){const n=note(route.id);if(!n||n.trashed)return page('Note unavailable',empty('This note is unavailable','Check Trash to restore it.'));const source=n.source&&chat(n.source.chatId);return header('',`<span id="savestatus" class="status ${storageError?'bad':''}">${storageError?'Not saved':'Saved on this device'}</span>${ib('pin','pinnote',n.pinned?'Unpin note':'Pin note',`data-id="${E(n.id)}"`)}${ib('more','notemenu','Note actions',`data-id="${E(n.id)}"`)}`,true)+`<div class="content editor-content"><div class="editor-date">${E(formatUserDate((n.day||n.created||n.updated||now()).slice(0,10)))}${n.day?` · ${T('Linked to this day')}`:''}${data.prefs.focusMode?`<span class="focus-chip">${T('Focus mode')}</span>`:''}</div><input class="editor-title" id="noteTitle" placeholder="Title" value="${E(n.title)}" aria-label="Note title"><button class="badge editor-cat" data-act="category" data-id="${E(n.id)}">${catDot(n.category)}${E(n.category||'Add category')}</button>${n.reminder?` <button class="badge" data-act="reminder" data-id="${E(n.id)}">${icon('bell')}${E(dateLabel(n.reminder.date))} ${E(n.reminder.time)}</button>`:''}${/^(\[[ xX]\])/m.test(n.body)?`<div class="checklist-actions"><button data-act="togglecompleted" aria-pressed="${!data.prefs.showCompleted}">${data.prefs.showCompleted?'Hide completed':'Show completed'}</button><button data-act="organizecheck" data-id="${E(n.id)}">Reorder checklist</button></div>`:''}<div class="read-body" id="readBody" ${editing?'hidden':''}>${n.body?bodyPreview(n):'<p class="muted" data-act="editbody">'+T('Start writing…')+'</p>'}</div><textarea id="noteBody" class="note-body" aria-label="Note text" placeholder="Start writing…" ${editing?'':'hidden'}>${E(n.body)}</textarea>${n.source?`<div class="source">${icon('chat')}<span class="grow">${source?'From chat · '+E(source.title):'Source conversation unavailable'}</span>${source?'<button class="textbtn" data-act="source" data-id="'+E(n.id)+'">View source</button>':''}</div>`:''}<div id="savewarning">${storageError?saveWarning():''}</div><div class="editor-bottom"><button class="editor-ai-context" data-act="continue" data-id="${E(n.id)}">${icon('ai')}${T('Explore note with AI')}${icon('chevron')}</button></div></div><div class="toolbar">${[['checklist','Checklist'],['list','List'],['undo','Undo'],['redo','Redo'],['ai','AI']].map(([k,t])=>`<button data-act="${k==='ai'?'noteai':'edittool'}" data-tool="${k}" data-id="${E(n.id)}">${icon(k)}${t}</button>`).join('')}</div>`}
+function editor(){const n=note(route.id);if(!n||n.trashed)return page('Note unavailable',empty('This note is unavailable','Check Trash to restore it.'));const source=n.source&&chat(n.source.chatId);return header('',`<span id="savestatus" class="status ${storageError?'bad':''}">${storageError?'Not saved':'Saved on this device'}</span>${ib('pin','pinnote',n.pinned?'Unpin note':'Pin note',`data-id="${E(n.id)}"`)}${ib('more','notemenu','Note actions',`data-id="${E(n.id)}"`)}`,true)+`<div class="content editor-content"><div class="editor-date">${E(formatUserDate((n.day||n.created||n.updated||now()).slice(0,10)))}${n.day?` · ${T('Linked to this day')}`:''}${data.prefs.focusMode?`<span class="focus-chip">${T('Focus mode')}</span>`:''}</div><input class="editor-title" id="noteTitle" placeholder="Title" value="${E(n.title)}" aria-label="Note title"><button class="badge editor-cat" data-act="category" data-id="${E(n.id)}">${catDot(n.category)}${E(T(n.category||'Add category'))}</button>${n.reminder?` <button class="badge" data-act="reminder" data-id="${E(n.id)}">${icon('bell')}${E(dateLabel(n.reminder.date))} ${E(n.reminder.time)}</button>`:''}${/^(\[[ xX]\])/m.test(n.body)?`<div class="checklist-actions"><button data-act="togglecompleted" aria-pressed="${!data.prefs.showCompleted}">${data.prefs.showCompleted?'Hide completed':'Show completed'}</button><button data-act="organizecheck" data-id="${E(n.id)}">Reorder checklist</button></div>`:''}<div class="read-body" id="readBody" ${editing?'hidden':''}>${n.body?bodyPreview(n):'<p class="muted" data-act="editbody">'+T('Start writing…')+'</p>'}</div><textarea id="noteBody" class="note-body" aria-label="Note text" placeholder="Start writing…" ${editing?'':'hidden'}>${E(n.body)}</textarea>${n.source?`<div class="source">${icon('chat')}<span class="grow">${source?'From chat · '+E(source.title):'Source conversation unavailable'}</span>${source?'<button class="textbtn" data-act="source" data-id="'+E(n.id)+'">View source</button>':''}</div>`:''}<div id="savewarning">${storageError?saveWarning():''}</div><div class="editor-bottom"><button class="editor-ai-context" data-act="continue" data-id="${E(n.id)}">${icon('ai')}${T('Explore note with AI')}${icon('chevron')}</button></div></div><div class="toolbar">${[['checklist','Checklist'],['list','List'],['undo','Undo'],['redo','Redo'],['ai','AI']].map(([k,t])=>`<button data-act="${k==='ai'?'noteai':'edittool'}" data-tool="${k}" data-id="${E(n.id)}">${icon(k)}${t}</button>`).join('')}</div>`}
 function saveWarning(){return `<div class="notice error"><strong>Couldn’t save this note</strong><br>${E(storageError)}<div class="two">${btn('Retry','retrysave','secondary')}${btn('Copy text','copycurrent','secondary')}</div></div>`}
 function tasks(){const ts=data.tasks.filter(t=>!t.trashed&&(taskFilter==='Completed'?t.done:taskFilter==='Today'?t.date===today&&!t.done:taskFilter==='Upcoming'?t.date>today&&!t.done:!t.done));return page('Tasks',`<div class="chips">${['Open','Today','Upcoming','Completed'].map(f=>`<button class="chip ${f===taskFilter?'sel':''}" data-act="taskfilter" data-value="${f}">${f}</button>`).join('')}</div>${ts.map(taskRow).join('')||empty('All clear','Tasks you create will appear here.','checklist',btn('New task','newtask','primary'))}`,ib('plus','newtask','New task'))}
 function taskForm(){const t=task(route.id)||{title:route.draftTitle||'',date:route.date||calendarDay,time:'',noteId:route.fromNote||'',reminder:'At time',repeat:'Never'};return page(route.id?'Task details':'New task',`<div class="field"><label for="taskTitle">Task title</label><input id="taskTitle" class="input" placeholder="What needs to be done?" value="${E(t.title)}" maxlength="300"></div><div class="field"><label for="taskDate">Date</label><input type="date" class="input" id="taskDate" value="${E(t.date||today)}"></div><div class="field"><label for="taskTime">Time <span class="muted">· optional</span></label><input type="time" class="input" id="taskTime" value="${E(t.time||'')}"></div><div class="field"><label for="taskReminder">Reminder</label><select id="taskReminder" class="input">${['At time','10 minutes before','1 hour before','None'].map(v=>`<option ${v===t.reminder?'selected':''}>${v}</option>`).join('')}</select></div><details><summary class="textbtn">More options</summary><div class="field"><label for="taskRepeat">Repeat</label><select id="taskRepeat" class="input">${['Never','Daily','Weekly','Monthly'].map(v=>`<option ${v===t.repeat?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label for="taskNote">Linked note</label><select id="taskNote" class="input"><option value="">None</option>${activeNotes().map(n=>`<option value="${E(n.id)}" ${t.noteId===n.id?'selected':''}>${E(n.title||'Untitled note')}</option>`).join('')}</select></div></details><div class="notice">Reminder timing is a visual demo here. This HTML does not schedule system notifications.</div>${route.id?btn(t.done?'Mark as open':'Mark complete','completetask','secondary full',`data-id="${E(t.id)}"`):''}`,route.id?ib('trash','deletetask','Delete task',`data-id="${E(t.id)}"`):'','',`<div class="footactions">${btn(route.id?'Update task':'Create task','savetask','primary full')}</div>`)}
@@ -1362,6 +1398,134 @@ applyTheme=function(){
 };
 window.NotepadDemo.version=NH_VERSION;
 window.NotepadDemo.harmonyVersion=NH_VERSION;
+render();
+})();
+</script>
+<script>
+/* Notepad AI v0.9.4: 3 view states + default/local categories and one-line management.
+   Owner-approved UI only: does not alter version-2 storage schema or existing saved records. */
+(function(){
+'use strict';
+const V094='0.9.4',BUILTINS094=['Personal','Work','Study','Shopping'];
+Object.assign(RU,{'Study':'Учёба','Shopping':'Покупки','Personal':'Личное','Work':'Работа',
+ 'Cards':'Карточки','Grid':'Сетка','Category management':'Управление категориями',
+ 'Manage categories':'Управление категориями','Add category':'Добавить категорию',
+ 'Restore starter categories':'Добавить стандартные категории',
+ 'Categories can be reordered with arrow buttons. Notes are never deleted when a category is removed.':'Порядок категорий меняется стрелками. При удалении категории заметки сохраняются.',
+ 'Category added':'Категория добавлена','Category order updated':'Порядок категорий изменён',
+ 'Category already exists':'Такая категория уже существует',
+ 'Enter a category name':'Введите название категории',
+ 'Save category':'Сохранить категорию',
+ 'All (system filter)':'Все · системный фильтр',
+ 'Uncategorized':'Без категории',
+ 'Current view':'Текущий вид',
+ 'Switch view':'Переключить вид',
+ 'No default categories to add':'Все стандартные категории уже есть',
+ 'Starter categories added':'Стандартные категории добавлены'});
+const tr094=(ru,en)=>isRU()?ru:en;
+const catLabel094=(name)=>BUILTINS094.includes(name)?T(name):name;
+const currentView094=()=>['compact','comfortable','tiles'].includes(data.prefs.notesView)?data.prefs.notesView:'comfortable';
+const VIEW_KEYS094=['compact','comfortable','tiles'];
+const viewLabel094=(v)=>v==='compact'?tr094('Компактно','Compact'):v==='comfortable'?tr094('Карточки','Cards'):tr094('Сетка','Grid');
+const previousNotes094=notes;
+notes=function(){
+ let html=previousNotes094();
+ const filters=['All',...data.categories];
+ const categoryBar='<div class="n94-categorybar"><div class="n94-categories" role="group" aria-label="'+E(tr094('Категории заметок','Note categories'))+'">'+
+ filters.map(f=>'<button class="chip '+(noteFilter===f?'sel':'')+'" data-act="notefilter" data-value="'+E(f)+'" aria-pressed="'+(noteFilter===f)+'" title="'+E(catLabel094(f))+'">'+E(catLabel094(f)==='All'?T('All'):catLabel094(f))+'</button>').join('')+
+ '</div><button class="n94-manage" data-act="catmanager" aria-label="'+E(T('Manage categories'))+'" title="'+E(T('Manage categories'))+'">'+icon('plus')+'</button></div>';
+ html=html.replace(/<div class="chips">[\s\S]*?<\/div>/,categoryBar);
+ const v=currentView094(),idx=VIEW_KEYS094.indexOf(v),next=VIEW_KEYS094[(idx+1)%3];
+ html=html.replace(/<button class="notes-action" data-act="uiquickview"[\s\S]*?<\/button>/,
+ '<button class="notes-action" data-act="uiquickview" aria-label="'+E(T('Switch view')+': '+viewLabel094(v)+' → '+viewLabel094(next))+'" title="'+E(viewLabel094(v))+'" data-view="'+v+'">'+icon(v==='compact'?'list':v==='comfortable'?'card':'grid')+'</button>');
+ return html;
+};
+actions.uiquickview=()=>{const v=currentView094(),next=VIEW_KEYS094[(VIEW_KEYS094.indexOf(v)+1)%3];
+ if(transaction(()=>{data.prefs.notesView=next})) {render();toast(viewLabel094(next))}
+};
+// A new note created from a selected user category inherits it. + on All creates no category.
+newNote=function(){
+ const id=uid('n'),cat=data.categories.includes(noteFilter)?noteFilter:'';
+ const item={id,title:'',body:'',category:cat,created:now(),updated:now(),rev:1};
+ if(!transaction(()=>data.notes.unshift(item)))return toast(tr094('Не удалось сохранить заметку.','Could not save the note.'));
+ nav('editor',{id});editing=true;render();requestAnimationFrame(()=>$('#noteBody')?.focus());
+};
+actions.newnote=newNote;
+const priorDraw094=drawSheet;
+drawSheet=function(){
+ const requested=sheet?.type;
+ priorDraw094();
+ if(requested==='offlineCategories'){
+  const panel=$('#overlay .sheet');if(!panel)return;
+  const count=name=>data.notes.filter(n=>!n.trashed&&n.category===name).length;
+  const all=data.notes.filter(n=>!n.trashed).length;
+  const unc=data.notes.filter(n=>!n.trashed&&!n.category).length;
+  const system='<div class="n94-manager-system"><div><strong>'+E(T('All'))+'</strong><span>'+all+'</span></div><div><strong>'+E(T('Uncategorized'))+'</strong><span>'+unc+'</span></div></div>';
+  const items=data.categories.map((name,i)=>'<div class="n94-manage-row"><span class="n94-name" title="'+E(catLabel094(name))+'">'+E(catLabel094(name))+' <small>('+count(name)+')</small></span>'+
+    '<span class="n94-row-actions">'+
+    '<button data-act="catmove094" data-value="'+E(name)+'" data-dir="-1" aria-label="'+E(tr094('Переместить вверх','Move up'))+'" '+(i===0?'disabled':'')+'>↑</button>'+
+    '<button data-act="catmove094" data-value="'+E(name)+'" data-dir="1" aria-label="'+E(tr094('Переместить вниз','Move down'))+'" '+(i===data.categories.length-1?'disabled':'')+'>↓</button>'+
+    '<button data-act="catrename" data-value="'+E(name)+'" aria-label="'+E(T('Rename category'))+'">'+icon('note')+'</button>'+
+    '<button data-act="catdelete" data-value="'+E(name)+'" aria-label="'+E(T('Delete category'))+'">'+icon('trash')+'</button>'+
+    '</span></div>').join('');
+  panel.innerHTML=L('<div class="sheethead"><h2>'+E(T('Manage categories'))+'</h2>'+ib('close','closesheet','Close dialog')+'</div>'+
+    '<p class="n94-manager-help">'+E(T('Categories can be reordered with arrow buttons. Notes are never deleted when a category is removed.'))+'</p>'+
+    system+items+'<div class="n94-manager-actions">'+btn(E(T('Add category')),'catnew094','primary full')+
+    btn(E(T('Restore starter categories')),'catdefaults094','secondary full')+'</div>');
+  return;
+ }
+ if(requested==='offlineNewCategory094'){
+  const panel=$('#overlay .sheet');if(!panel)return;
+  panel.innerHTML=L('<div class="sheethead"><h2>'+E(T('Add category'))+'</h2>'+ib('close','closesheet','Close dialog')+'</div>'+
+   '<div class="field"><label for="n94CategoryName">'+E(T('Category name'))+'</label><input class="input" id="n94CategoryName" maxlength="40" placeholder="'+E(tr094('Например, Идеи','For example, Ideas'))+'" autocomplete="off"></div>'+
+   btn(E(T('Save category')),'catsave094','primary full'));
+  return;
+ }
+ if(['viewprefs','notesview'].includes(requested)){
+  for(const b of document.querySelectorAll('#overlay button[data-value]')){
+   const v=b.getAttribute('data-value');
+   if(VIEW_KEYS094.includes(v)){
+     const label=b.querySelector('.view-preview+span');
+     if(label)label.textContent=viewLabel094(v);
+     else{const title=b.querySelector('.title');if(title)title.textContent=viewLabel094(v)}
+   }
+  }
+ }
+};
+actions.catnew094=()=>openSheet('offlineNewCategory094');
+const forbidden094=['all','все','pinned','закреплённые','без категории','no category','uncategorized','none'];
+function validNewCategory094(s){
+ const name=String(s||'').trim();
+ if(!name||[...name].length>40||/[\u0000-\u001f\u007f]/u.test(name))return {error:T('Enter a category name')};
+ const k=name.toLocaleLowerCase();
+ if(forbidden094.includes(k)||data.categories.some(c=>c.toLocaleLowerCase()===k||catLabel094(c).toLocaleLowerCase()===k))return {error:T('Category already exists')};
+ return {name};
+}
+actions.catsave094=()=>{
+ const check=validNewCategory094($('#n94CategoryName')?.value);
+ if(check.error)return toast(check.error);
+ if(transaction(()=>data.categories.push(check.name))){noteFilter=check.name;notesListLimit=120;closeSheet();render();toast(T('Category added'))}
+};
+actions.catdefaults094=()=>{
+ const missing=BUILTINS094.filter(c=>!data.categories.includes(c)&&!data.categories.some(v=>v.toLocaleLowerCase()===T(c).toLocaleLowerCase()));
+ if(!missing.length)return toast(T('No default categories to add'));
+ if(transaction(()=>data.categories.push(...missing))){drawSheet();toast(T('Starter categories added'))}
+};
+actions.catmove094=d=>{
+ const index=data.categories.indexOf(d.value),step=Number(d.dir),j=index+step;
+ if(index<0||![1,-1].includes(step)||j<0||j>=data.categories.length)return;
+ if(transaction(()=>{const x=data.categories[index];data.categories[index]=data.categories[j];data.categories[j]=x;})){
+  drawSheet();toast(T('Category order updated'));
+ }
+};
+// Built-in categories have localized names in the note editor & management menu.
+const oldDrawSecond094=drawSheet;
+drawSheet=function(){oldDrawSecond094();if(sheet?.type==='category'||sheet?.type==='batchcategory'){
+ const els=document.querySelectorAll('#overlay button.row');
+ for(const b of els){const v=b.dataset.value;if(BUILTINS094.includes(v)){const title=b.querySelector('.title');if(title)title.textContent=T(v);}}
+ }};
+window.NotepadDemo.version=V094;
+window.NotepadDemo.categoryManagementVersion=V094;
 render();
 })();
 </script>
