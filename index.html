@@ -967,6 +967,19 @@ render();
 (function(){
  'use strict';
  const UI_VERSION='0.9.1';
+ Object.assign(RU,{
+  'Productivity':'Инструменты',
+  'Light, dark and system':'Светлая, тёмная и системная',
+  'English · Русский':'Английский · Русский',
+  'Week start and date format':'Начало недели и формат даты',
+  'Reminder preview':'Напоминания (демо)',
+  'Response style and selected notes':'Ответы и выбранные заметки',
+  'Optional notification shortcuts':'Быстрые действия в уведомлении',
+  'Export, backup and recovery':'Экспорт, копии и восстановление',
+  'Privacy and local data':'Конфиденциальность и локальные данные',
+  'Only in Android APK':'Только в Android APK',
+  'Enabled':'Включено','Disabled':'Выключено'
+ });
  const originalNotes=notes;
  notes=function(){
    let html=originalNotes();
@@ -995,9 +1008,9 @@ render();
  settings=function(){
    const title=(v)=>E(T(v));
    const body=settingsGroups.map(([section,entries])=>'<section class="settings-group"><h2>'+title(section)+'</h2>'+entries.map(([k,label,detail,target])=>{
-     let d=detail;
-     if(target==='quickaccess')d=nativeQuickAvailable()?(nativeQuickEnabled()?'Enabled':'Disabled'):'Only in Android APK';
-     if(target==='appearance')d=data.theme[0].toUpperCase()+data.theme.slice(1);
+     let d=T(detail);
+     if(target==='quickaccess')d=T(nativeQuickAvailable()?(nativeQuickEnabled()?'Enabled':'Disabled'):'Only in Android APK');
+     if(target==='appearance')d=T(data.theme[0].toUpperCase()+data.theme.slice(1));
      if(target==='language')d=data.language;
      return row(k,label,d,target==='quickaccess'||target==='templates'?target:'goto',target==='quickaccess'||target==='templates'?'':'data-route="'+target+'"');
    }).join('')+'</section>').join('');
