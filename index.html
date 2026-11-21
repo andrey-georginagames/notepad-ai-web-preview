@@ -1332,7 +1332,7 @@ render();
    if(transaction(()=>{data.prefs.notesView=data.prefs.notesView==='tiles'?'comfortable':'tiles'}))render();
  };
  const settingsGroups=[
-  ['Appearance',[['sun','Appearance','Light, dark and system','appearance'],['globe','Language','English · Русский','language']]],
+  ['Appearance',[['home','Start screen','Notes','startscreen'],['sun','Appearance','Light, dark and system','appearance'],['globe','Language','English · Русский','language']]],
   ['Notes',[['calendar','Calendar preferences','Week start and date format','calprefs'],['note','Text templates','Start a structured text note','templates']]],
   ['Productivity',[['bell','Notifications','Reminder preview','notifications'],['ai','AI preferences','Response style and selected notes','aiprefs'],['note','Android quick actions','Optional notification shortcuts','quickaccess']]],
   ['Data and recovery',[['sync','Data & sync','Export, backup and recovery','data'],['shield','Privacy & security','Privacy and local data','privacy']]]
@@ -1342,9 +1342,10 @@ render();
    const body=settingsGroups.map(([section,entries])=>'<section class="settings-group"><h2>'+title(section)+'</h2>'+entries.map(([k,label,detail,target])=>{
      let d=T(detail);
      if(target==='quickaccess')d=T(nativeQuickAvailable()?(nativeQuickEnabled()?'Enabled':'Disabled'):'Only in Android APK');
+     if(target==='startscreen')d=startScreenLabel();
      if(target==='appearance')d=T(data.theme[0].toUpperCase()+data.theme.slice(1));
      if(target==='language')d=data.language;
-     return row(k,label,d,target==='quickaccess'||target==='templates'?target:'goto',target==='quickaccess'||target==='templates'?'':'data-route="'+target+'"');
+     return row(k,target==='startscreen'?(isRU()?'Стартовый экран':'Start screen'):label,d,target==='quickaccess'||target==='templates'?target:'goto',target==='quickaccess'||target==='templates'?'':'data-route="'+target+'"');
    }).join('')+'</section>').join('');
    return page('Settings',body);
  };
