@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony R03 0.9.4</title>
+<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony R05 0.9.7</title>
 <style>
 :root{--bg:#fafaf7;--surface:#fff;--soft:#f0f3ef;--text:#202823;--muted:#66716b;--line:#e0e5df;--accent:#216d5b;--on:#fff;--tint:#e8f2ec;--danger:#b53636;--dangerbg:#fff0ed;--shadow:0 18px 60px #172e201a;--nav:72px;color-scheme:light}
 [data-theme=dark]{--bg:#151b18;--surface:#1c2420;--soft:#252f29;--text:#ecf1ed;--muted:#a3afa6;--line:#334037;--accent:#9bd5bd;--on:#14261d;--tint:#243c30;--danger:#ffa59d;--dangerbg:#3c2322;--shadow:0 18px 60px #0005;color-scheme:dark}
@@ -589,6 +589,38 @@ body{font-family:Roboto,"Segoe UI",Inter,sans-serif}
 @media(max-width:355px){.v095-segment button{font-size:11px;gap:3px}.v095-segment button svg{width:16px;height:16px}}
 @media(prefers-reduced-motion:reduce){.note-swipe-wrap>.note-card{transition:none}}
 </style>
+
+<style id="v097-black-style">
+/* Native Harmony R05: optional neutral Black theme. Existing Light and Purple Dark are unchanged. */
+html[data-theme="black"]{--bg:#000000;--surface:#252525;--soft:#171717;--text:#f9f9f9;--muted:#b9b9b9;--line:#444444;--accent:#f1f1f1;--on:#161616;--tint:#3a3a3a;--danger:#ff9299;--dangerbg:#301b21;--paper:#171717;--paper-line:#353535;--primary-ink:#f8f8f8;--shadow:0 3px 12px #0008;color-scheme:dark}
+html[data-theme="black"] body,html[data-theme="black"] .device,html[data-theme="black"] .screen,html[data-theme="black"] .stage{background:#000!important;color:var(--text)}
+html[data-theme="black"] .top,html[data-theme="black"] .nav{background:#000!important;border-color:#292929}
+html[data-theme="black"] .searchbox,html[data-theme="black"] .notes-tools .searchbox,html[data-theme="black"] .notes-action,html[data-theme="black"] .n94-manage{background:#242424!important;color:#f4f4f4!important;border:1px solid #383838!important;border-radius:16px!important}
+html[data-theme="black"] .n94-categories .chip{background:#000!important;border:1px solid #555!important;color:#eee!important;font-size:13px}
+html[data-theme="black"] .n94-categories .chip.sel{background:#3c3c3c!important;border-color:#3c3c3c!important;color:#fff!important}
+html[data-theme="black"] .notes-comfortable .note-card,html[data-theme="black"] .notes-tiles .note-card,html[data-theme="black"] .note-card{background:#252525!important;border:1px solid #3c3c3c!important;box-shadow:none!important;color:#fff!important}
+html[data-theme="black"] .note-more{color:#f8f8f8!important}
+html[data-theme="black"] .fab{background:#393939!important;color:#fff!important;box-shadow:0 4px 13px #0009!important}
+html[data-theme="black"] .nav button.active{background:transparent!important;color:#fff!important}
+html[data-theme="black"] .nav button.active svg{background:#383838!important;color:#fff!important}
+html[data-theme="black"] .sheet,html[data-theme="black"] .dialog,html[data-theme="black"] .v095-popover{background:#202020!important;color:#fff!important;border-color:#3e3e3e!important}
+html[data-theme="black"] .chip.sel:not(.n94-categories .chip){background:#3c3c3c!important;color:#fff!important}
+html[data-theme="black"] button:focus-visible{outline-color:#fff!important}
+/* The category row preserves the All filter and the management button while collapsed. */
+.n94-categorybar.is-collapsed .n94-categories{flex:1;gap:6px;scroll-snap-type:none}
+.n94-categorybar.is-collapsed .n94-categories .chip:not([data-value="All"]):not(.sel){display:none!important}
+.n94-categorybar .v097-caret{width:15px;height:15px;margin-left:7px;vertical-align:-2px;stroke-width:2.25}
+.n94-categorybar .n94-categories button[data-value="All"]{display:inline-flex;align-items:center;justify-content:center;gap:3px;flex:none}
+.n94-categorybar{margin-top:7px!important;margin-bottom:8px!important}
+/* Tight, deliberate hierarchy from tools -> categories -> real notes. */
+.screen:has(.n94-categorybar) .notes-counter{margin-top:4px!important;margin-bottom:7px!important;min-height:0}
+.screen:has(.n94-categorybar) .note-summary{margin-top:4px!important;margin-bottom:7px!important}
+.screen:has(.n94-categorybar) .notes-comfortable,.screen:has(.n94-categorybar) .notes-compact,.screen:has(.n94-categorybar) .notes-tiles{margin-top:8px!important}
+.v097-heading{display:flex;align-items:center;justify-content:space-between;margin:2px 0 12px;min-height:27px}
+.v097-heading h2{font-size:21px;font-weight:750;letter-spacing:-.25px}
+html[data-theme="black"] .v097-heading{color:#fff}
+@media(max-width:350px){.v097-heading{margin-bottom:8px}.n94-categorybar{gap:4px!important}}
+</style>
 </head>
 <body>
 <main class="stage">
@@ -635,7 +667,7 @@ const paths={home:'m3 10 9-7 9 7v10h-6v-7H9v7H3Z',note:'M6 3h8l4 4v14H6ZM14 3v5h
 paths.grid='M3 3h7v7H3ZM14 3h7v7h-7ZM3 14h7v7H3ZM14 14h7v7h-7Z';paths.sort='M3 6h18M3 12h13M3 18h8';paths.circle='M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0-18';function icon(k){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+(paths[k]||paths.note)+'"/></svg>'}
 function ib(k,a,label,extra=''){return `<button class="iconbtn" data-act="${a}" aria-label="${E(label)}" title="${E(label)}" ${extra}>${icon(k)}</button>`}
 function btn(t,a,c='primary',extra=''){return `<button class="btn ${c}" data-act="${a}" ${extra}>${t}</button>`}
-function seed(){return {version:2,onboarded:false,theme:'dark',font:'default',language:'English',prefs:{length:'Balanced',response:'App language',notifications:false,analytics:false},account:false,sync:false,plan:'Free',activeChat:'',operations:{},notes:[],tasks:[],chats:[],categories:['Personal','Work','Study','Shopping']}}
+function seed(){return {version:2,onboarded:false,theme:'black',font:'default',language:'English',prefs:{length:'Balanced',response:'App language',notifications:false,analytics:false},account:false,sync:false,plan:'Free',activeChat:'',operations:{},notes:[],tasks:[],chats:[],categories:['Personal','Work','Study','Shopping']}}
 const KEY='notepad_ai_concept02_v1';const RECOVERY_KEY='notepad_ai_concept02_recovery_v1';let corruptRaw='',storageError='',storeBlocked=false;
 function load(){try{const raw=localStorage.getItem(KEY);if(!raw)return seed();const v=JSON.parse(raw);if(v.version!==2||!Array.isArray(v.notes)||!Array.isArray(v.tasks)||!Array.isArray(v.chats)||!record(v.prefs)||!record(v.operations)||!Array.isArray(v.categories))throw new Error('Unrecognized prototype data');return v}catch(e){try{corruptRaw=localStorage.getItem(KEY)||''}catch{}storeBlocked=!!corruptRaw;storageError=storeBlocked?'Stored data could not be read. Your original data has not been overwritten.':'Browser storage is unavailable. Changes will stay in this session only.';return seed()}}
 let data=load();
@@ -683,7 +715,7 @@ function snippetNear(text,query,max=110){const clean=String(text||'').replace(/^
 
 function persist(){try{if(flags.saveError)throw new Error('Demo save error');if(storeBlocked)throw new Error('Stored data needs recovery');localStorage.setItem(KEY,JSON.stringify(data));storageError='';return true}catch(e){storageError=flags.saveError?'Demo: this write was not saved.':storeBlocked?'Stored data needs recovery. Export it from Data & sync before resetting.':'Could not save in this browser. Keep this tab open and export your text.';return false}}
 function transaction(fn){const before=JSON.stringify(data);fn();if(persist())return true;data=JSON.parse(before);toast('Not saved. Your previous data is unchanged.');return false}
-function applyTheme(){localeChrome();const dark=data.theme==='dark'||(data.theme==='system'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=dark?'dark':'light';document.documentElement.dataset.font=data.font;document.documentElement.dataset.paper=data.prefs.paperStyle;document.documentElement.style.fontSize=data.font==='large'?'18px':'16px';$('#themeLabel').innerHTML=icon(dark?'moon':'sun')+T(dark?'Dark':'Light');document.querySelector('meta[name="theme-color"]').content=dark?'#151b18':'#fafaf7'}
+function applyTheme(){localeChrome();const black=data.theme==='black';const dark=black||data.theme==='dark'||(data.theme==='system'&&window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.dataset.theme=black?'black':(dark?'dark':'light');document.documentElement.dataset.font=data.font;document.documentElement.dataset.paper=data.prefs.paperStyle;document.documentElement.style.fontSize=data.font==='large'?'18px':'16px';$('#themeLabel').innerHTML=icon(dark?'moon':'sun')+T(dark?'Dark':'Light');document.querySelector('meta[name="theme-color"]').content=black?'#000000':dark?'#151b18':'#fafaf7'}
 function toast(text){const el=$('#toast');el.textContent=T(text);el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.hidden=true,2900)}
 function saveEditorCursor(){if(route.name!=='editor'||!note(route.id))return;const c=$('.content'),el=$('#noteBody');const before=data.prefs.editorResume||{};data.prefs.editorResume={id:route.id,start:el&&!el.hidden?el.selectionStart:(before.id===route.id?before.start:0)||0,end:el&&!el.hidden?el.selectionEnd:(before.id===route.id?before.end:0)||0,scroll:c?.scrollTop||0};}
 function leaveEditor(nextName,nextProps={}){if(route.name==='editor')saveEditorCursor();data.prefs.editorResume=nextName==='editor'&&note(nextProps.id)?{id:nextProps.id,start:0,end:0,scroll:0}:null;persist();}
@@ -816,7 +848,7 @@ function storageHealthPage(){const status=storeHealthStatus(),rec=recoveryInfo()
  const recoveryLabel=!rec.present?'No local recovery point':rec.valid?'Local copy: '+rec.notes+' notes · '+rec.tasks+' tasks · '+rec.chats+' chats':'Local copy unreadable';
  return page('Storage health',`<div class="notice"><strong>${T('Storage is local')}</strong><br>${T('Your data stays in this installation. Export a copy before clearing browser storage.')}</div><div class="storage-facts"><div><strong>${data.notes.length}</strong><span>${T('Notes')}</span></div><div><strong>${data.tasks.length}</strong><span>${T('Tasks')}</span></div><div><strong>${data.chats.length}</strong><span>${T('Chats')}</span></div><div><strong>${E(label)}</strong><span>${T('Estimated local data size')}</span></div></div>${row('checklist','Verify backup format',status.valid?'Backup format valid':'Backup check failed'+(status.error?' · '+E(status.error):''),'verifybackup')}${row('shield','Check links',linkWarnings?linkWarnings+' links point to missing items':'No missing note/task/chat links','checklinks')}<h2 class="section">${T('Recovery point')}</h2><div class="notice">${E(recoveryLabel)}<br>${T('This copy is on the same device. It will also disappear if app or browser storage is cleared.')}</div>${btn('Save local recovery point','savelocalrecovery','secondary full')}${rec.valid?`<div class="stack" style="margin-top:12px">${btn('Restore local copy as new items','restorelocalrecovery','secondary full')}${btn('Download local recovery JSON','exportlocalrecovery','secondary full')}</div>`:''}<div class="notice">${T('No remote backup or encryption in this prototype.')} ${T('Save a JSON backup regularly.')}</div>${btn('Create backup','backup','secondary full')}`);
 }
-function appearance(){return page('Appearance',`<h2 class="section">Theme</h2>${['light','dark','system'].map(v=>row(v==='light'?'sun':v==='dark'?'moon':'settings',v[0].toUpperCase()+v.slice(1),v==='system'?'Match your device settings':'','settheme',`data-value="${v}"`,`<span class="radio ${data.theme===v?'sel':''}"></span>`)).join('')}<h2 class="section">Writing surface</h2><div class="chips">${[['lined','Paper Lite'],['clean','Clean canvas'],['soft','Soft color']].map(([value,label])=>`<button class="chip ${data.prefs.paperStyle===value?'sel':''}" data-act="setpaper" data-value="${value}" aria-pressed="${data.prefs.paperStyle===value}">${T(label)}</button>`).join('')}</div><h2 class="section">Text size</h2><div class="chips">${['default','large'].map(v=>`<button class="chip ${data.font===v?'sel':''}" data-act="fontsize" data-value="${v}">${v==='large'?'Large':'Default'}</button>`).join('')}</div><div class="notice" style="font-size:${data.font==='large'?'20':'17'}px">A comfortable place to write.<br><span class="muted">Your ideas, with room to breathe.</span></div><p class="meta">Light is selected for this concept preview. The production theme default is Dark; this concept opens Light for review.</p>`)}
+function appearance(){return page('Appearance',`<h2 class="section">Theme</h2>${['light','dark','black','system'].map(v=>row(v==='light'?'sun':(v==='dark'||v==='black')?'moon':'settings',v[0].toUpperCase()+v.slice(1),v==='system'?'Match your device settings':'','settheme',`data-value="${v}"`,`<span class="radio ${data.theme===v?'sel':''}"></span>`)).join('')}<h2 class="section">Writing surface</h2><div class="chips">${[['lined','Paper Lite'],['clean','Clean canvas'],['soft','Soft color']].map(([value,label])=>`<button class="chip ${data.prefs.paperStyle===value?'sel':''}" data-act="setpaper" data-value="${value}" aria-pressed="${data.prefs.paperStyle===value}">${T(label)}</button>`).join('')}</div><h2 class="section">Text size</h2><div class="chips">${['default','large'].map(v=>`<button class="chip ${data.font===v?'sel':''}" data-act="fontsize" data-value="${v}">${v==='large'?'Large':'Default'}</button>`).join('')}</div><div class="notice" style="font-size:${data.font==='large'?'20':'17'}px">A comfortable place to write.<br><span class="muted">Your ideas, with room to breathe.</span></div><p class="meta">Light is selected for this concept preview. The production theme default is Dark; this concept opens Light for review.</p>`)}
 function language(){return page('Language',row('globe','English','','languagechoice','data-value="English"','<span class="radio '+(data.language==='English'?'sel':'')+'"></span>')+row('globe','Русский','','languagechoice','data-value="Russian"','<span class="radio '+(data.language==='Russian'?'sel':'')+'"></span>')+'<div class="notice">Changes apply immediately.</div>')}
 function notifications(){return page('Notifications',`<div class="notice"><strong>${data.prefs.notifications?'Demo reminders enabled':'Notifications are off'}</strong><br>This preview does not request system permission or deliver notifications.${btn(data.prefs.notifications?'Turn demo off':'Preview permission','notification','secondary full')}</div>${row('bell','Reminder sound','Default','info','data-info="Reminder sounds are a design preview. No sound will play."')}${row('settings','Vibration','System setting','info','data-info="Vibration belongs to the native Android app; it is not active in this preview."')}`)}
 function aiPrefs(){return page('AI preferences',row('globe','Response language',data.prefs.response,'prefselect','data-key="response"')+row('list','Response length',data.prefs.length,'prefselect','data-key="length"')+row('note','Context','Selected notes and conversation','info','data-info="Only the visibly selected note is included in this demo. No external AI receives your data."')+`<div class="notice">Review the notes used in each chat. Removing a note from context does not delete it.</div>`+row('chat','Manage conversations','','goto','data-route="history"'))}
@@ -1966,6 +1998,58 @@ actions.batchtrash=()=>{
 };
 window.NotepadDemo.openExistingNote096=id=>{const n=note(String(id));if(n&&!n.trashed)nav('editor',{id:n.id},true);else nav('notes',{},true)};
 window.NotepadDemo.version=V096;window.NotepadDemo.nativeReminders096=native096();
+render();
+})();
+</script>
+
+<script>
+/* v0.9.7: owner-approved collapse/expand of category filter + third true-black theme.
+   No data deletion or new external service. */
+(function(){
+'use strict';
+const V097='0.9.7';
+RU['Black']='Чёрная';
+const label097=(ru,en)=>isRU()?ru:en;
+const caret097=down=>'<svg class="v097-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="'+(down?'m6 9 6 6 6-6':'m6 15 6-6 6 6')+'"/></svg>';
+const previousNotes097=notes;
+notes=function(){
+ let html=previousNotes097();
+ if(!html.includes('n94-categorybar'))return html;
+ const expanded=data.prefs.categoriesExpanded097!==false;
+ html=html.replace('class="n94-categorybar"','class="n94-categorybar '+(expanded?'is-expanded':'is-collapsed')+'"');
+ html=html.replace(/(<button class="chip [^"]*" data-act=")notefilter(" data-value="All"[^>]*>)([\s\S]*?)(<\/button>)/,
+  (_,a,b,c,close)=>a+'togglecats097'+b+label097('Все','All')+caret097(!expanded)+close);
+ // Always show the current active category when the row is collapsed. It is not reset.
+ // The heading is actual app UI, not a mock status badge or demo content.
+ html=html.replace('<div class="notes-tools">','<div class="v097-heading"><h2>'+label097('Заметки','Notes')+'</h2></div><div class="notes-tools">');
+ return html;
+};
+actions.togglecats097=()=>{
+ if(noteFilter!=='All'){
+  noteFilter='All';data.prefs.categoriesExpanded097=true;
+ }else data.prefs.categoriesExpanded097=!(data.prefs.categoriesExpanded097!==false);
+ persist();render();
+};
+// Tapping the already-active category also folds/unfolds instead of doing nothing.
+const oldFilter097=actions.notefilter;
+actions.notefilter=d=>{
+ if(d?.value===noteFilter&&noteFilter!=='All'){
+  data.prefs.categoriesExpanded097=!(data.prefs.categoriesExpanded097!==false);
+  persist();render();return;
+ }
+ return oldFilter097(d);
+};
+const oldApply097=applyTheme;
+applyTheme=function(){
+ oldApply097();
+ if(window.NotepadAndroid&&typeof window.NotepadAndroid.setTheme==='function'){
+  try{window.NotepadAndroid.setTheme(data.theme==='black'?'black':document.documentElement.dataset.theme);}catch(e){}
+ }
+ const themeLabel=document.querySelector('#themeLabel');
+ if(themeLabel&&data.theme==='black')themeLabel.innerHTML=icon('moon')+label097('Чёрная','Black');
+};
+window.NotepadDemo.version=V097;
+window.NotepadDemo.categoryToggleVersion=V097;
 render();
 })();
 </script>
