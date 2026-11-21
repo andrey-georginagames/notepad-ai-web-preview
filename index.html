@@ -1935,6 +1935,35 @@ actions.savereminder=d=>{
 };
 const prevRemove096=actions.removereminder;
 actions.removereminder=d=>{if(native096())try{window.NotepadAndroid.cancelReminder(d.id)}catch{};prevRemove096(d)};
+const oldBulkMore096=actions.batchmore;
+actions.batchmore=()=>{
+ const picked=selectedNotes();if(picked.length!==1)return oldBulkMore096();
+ const id=picked[0].id;selection.clear();selectMode=false;render();
+ const anchor=document.querySelector('.note-more[data-id="'+CSS.escape(id)+'"]');
+ if(anchor)actions.notemenu({id},anchor);else openSheet('notemenu',{id});
+};
+function bulkUndo096(message,snapshot){
+ const el=$('#toast');if(!el)return toast(message);
+ el.textContent=message+' · ';el.hidden=false;el.style.pointerEvents='auto';
+ const b=document.createElement('button');b.textContent=tr('Отменить','Undo');b.style='color:inherit;text-decoration:underline;margin-left:5px;padding:5px;font-weight:750;';
+ b.onclick=()=>{if(transaction(()=>snapshot.forEach(item=>{const n=note(item.id);if(n)Object.assign(n,item)}))){el.hidden=true;render()}};
+ el.appendChild(b);clearTimeout(toastTimer);toastTimer=setTimeout(()=>{el.hidden=true;el.style.pointerEvents='none'},5900);
+}
+function bulkApply096(ids,kind){
+ const notes=ids.map(note).filter(Boolean);if(!notes.length)return;
+ const snapshot=notes.map(n=>({id:n.id,pinned:n.pinned,archived:n.archived,trashed:n.trashed,updated:n.updated}));
+ const allPinned=notes.every(n=>n.pinned);
+ if(transaction(()=>notes.forEach(n=>{if(kind==='pin')n.pinned=!allPinned;else if(kind==='archive')n.archived=true;else if(kind==='trash'){n.trashed=true;n.archived=false;}n.updated=now()}))){
+  selection.clear();selectMode=false;closeSheet();render();
+  bulkUndo096(kind==='pin'?tr('Закрепление изменено','Pin state changed'):kind==='archive'?tr('Перемещено в архив','Moved to Archive'):tr('Перемещено в корзину','Moved to Trash'),snapshot);
+ }
+}
+actions.batchpin=()=>bulkApply096(selectedNotes().map(n=>n.id),'pin');
+actions.batcharchive=()=>bulkApply096(selectedNotes().map(n=>n.id),'archive');
+actions.batchtrash=()=>{
+ const ids=selectedNotes().map(n=>n.id);if(!ids.length)return;
+ openSheet('confirm',{title:tr('Переместить в корзину?','Move to Trash?'),text:tr('Заметки можно восстановить. Количество: ','You can restore notes. Count: ')+ids.length,button:tr('В корзину','Move to Trash'),danger:true,run:()=>bulkApply096(ids,'trash')});
+};
 window.NotepadDemo.openExistingNote096=id=>{const n=note(String(id));if(n&&!n.trashed)nav('editor',{id:n.id},true);else nav('notes',{},true)};
 window.NotepadDemo.version=V096;window.NotepadDemo.nativeReminders096=native096();
 render();
