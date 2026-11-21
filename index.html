@@ -767,13 +767,23 @@ function editor(){const n=note(route.id);if(!n||n.trashed)return page('Note unav
 function saveWarning(){return `<div class="notice error"><strong>Couldn’t save this note</strong><br>${E(storageError)}<div class="two">${btn('Retry','retrysave','secondary')}${btn('Copy text','copycurrent','secondary')}</div></div>`}
 function tasks(){const ts=data.tasks.filter(t=>!t.trashed&&(taskFilter==='Completed'?t.done:taskFilter==='Today'?t.date===today&&!t.done:taskFilter==='Upcoming'?t.date>today&&!t.done:!t.done));return page('Tasks',`<div class="chips">${['Open','Today','Upcoming','Completed'].map(f=>`<button class="chip ${f===taskFilter?'sel':''}" data-act="taskfilter" data-value="${f}">${f}</button>`).join('')}</div>${ts.map(taskRow).join('')||empty('All clear','Tasks you create will appear here.','checklist',btn('New task','newtask','primary'))}`,ib('plus','newtask','New task'))}
 function taskForm(){const t=task(route.id)||{title:route.draftTitle||'',date:route.date||calendarDay,time:'',noteId:route.fromNote||'',reminder:'At time',repeat:'Never'};return page(route.id?'Task details':'New task',`<div class="field"><label for="taskTitle">Task title</label><input id="taskTitle" class="input" placeholder="What needs to be done?" value="${E(t.title)}" maxlength="300"></div><div class="field"><label for="taskDate">Date</label><input type="date" class="input" id="taskDate" value="${E(t.date||today)}"></div><div class="field"><label for="taskTime">Time <span class="muted">· optional</span></label><input type="time" class="input" id="taskTime" value="${E(t.time||'')}"></div><div class="field"><label for="taskReminder">Reminder</label><select id="taskReminder" class="input">${['At time','10 minutes before','1 hour before','None'].map(v=>`<option ${v===t.reminder?'selected':''}>${v}</option>`).join('')}</select></div><details><summary class="textbtn">More options</summary><div class="field"><label for="taskRepeat">Repeat</label><select id="taskRepeat" class="input">${['Never','Daily','Weekly','Monthly'].map(v=>`<option ${v===t.repeat?'selected':''}>${v}</option>`).join('')}</select></div><div class="field"><label for="taskNote">Linked note</label><select id="taskNote" class="input"><option value="">None</option>${activeNotes().map(n=>`<option value="${E(n.id)}" ${t.noteId===n.id?'selected':''}>${E(n.title||'Untitled note')}</option>`).join('')}</select></div></details><div class="notice">Reminder timing is a visual demo here. This HTML does not schedule system notifications.</div>${route.id?btn(t.done?'Mark as open':'Mark complete','completetask','secondary full',`data-id="${E(t.id)}"`):''}`,route.id?ib('trash','deletetask','Delete task',`data-id="${E(t.id)}"`):'','',`<div class="footactions">${btn(route.id?'Update task':'Create task','savetask','primary full')}</div>`)}
+// Calendar v0.9.9: explicit calendar date takes precedence; otherwise use local CREATED day.
+// No mutation of old notes, import and backup formats stay the same.
+function calendarNoteDay099(n){
+ if(validISODate(n?.day))return n.day;
+ const source=n?.created||n?.updated;
+ if(validISODate(source))return source;
+ const parsed=source?new Date(source):null;
+ return parsed&&Number.isFinite(parsed.getTime())?localDate(parsed):'';
+}
+let calendarQuickOpen099=false;
 function calendar(){
  const firstDay=data.prefs.weekStart==='sunday'?0:1;
  const selected=validISODate(calendarDay)?calendarDay:localDate();
  const [year,month]=calendarMonth.split('-').map(Number);
  const first=new Date(year,month-1,1),days=new Date(year,month,0).getDate();
  const taskDays=new Set(data.tasks.filter(t=>!t.trashed&&validISODate(t.date)).map(t=>t.date));
- const noteDays=new Set();for(const n of data.notes){if(n.archived||n.trashed)continue;if(validISODate(n.day))noteDays.add(n.day);if(validISODate(n.reminder?.date))noteDays.add(n.reminder.date)}
+ const noteDays=new Set();for(const n of data.notes){if(n.archived||n.trashed)continue;const entryDay=calendarNoteDay099(n);if(entryDay)noteDays.add(entryDay);if(validISODate(n.reminder?.date))noteDays.add(n.reminder.date)}
  const titles=firstDay===1?['Mon','Tue','Wed','Thu','Fri','Sat','Sun']:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
  let cells=[];
  if(data.prefs.calendarView==='week'){
@@ -789,12 +799,16 @@ function calendar(){
   const label=E(formatUserDate(d))+' · '+(noteDays.has(d)?T('Notes')+' ':'')+(taskDays.has(d)?T('Tasks'):'');
   grid+=`<button class="day ${d===localDate()?'today':''} ${d===selected?'sel':''}" data-act="day" data-date="${d}" aria-label="${E(label)}" aria-pressed="${d===selected}">${Number(d.slice(-2))}${marks}</button>`;
  }
- const notesOnDay=activeNotes().filter(n=>n.day===selected||n.reminder?.date===selected);
+ const notesOnDay=activeNotes().filter(n=>calendarNoteDay099(n)===selected||n.reminder?.date===selected);
  const tasksOnDay=data.tasks.filter(t=>!t.trashed&&t.date===selected);
  const viewTabs=`<div class="calendar-mode"><button class="${data.prefs.calendarView==='month'?'sel':''}" data-act="calview" data-value="month">${T('Month')}</button><button class="${data.prefs.calendarView==='week'?'sel':''}" data-act="calview" data-value="week">${T('Week')}</button><button data-act="calendartoday">${T('Today')}</button><button style="margin-left:auto" data-act="goto" data-route="calprefs" aria-label="${E(T('Open calendar settings'))}">${icon('settings')}</button></div>`;
  const headerTitle=data.prefs.calendarView==='month'?first.toLocaleDateString(isRU()?'ru-RU':'en-US',{month:'long',year:'numeric'}):formatUserDate(cells[0])+' – '+formatUserDate(cells.at(-1));
- const details=`<div class="cal-details"><div class="sectionhead"><h2>${E(formatUserDate(selected))}</h2></div><h3>${T('Notes for this day')} · ${notesOnDay.length}</h3>${notesOnDay.map(n=>noteRow(n)).join('')||`<p class="meta">${T('No notes linked to this day')}</p>`}<h3>${T('Tasks for this day')} · ${tasksOnDay.length}</h3>${tasksOnDay.map(taskRow).join('')||`<p class="meta">${T('No tasks for this day')}</p>`}</div><div class="cal-actions">${btn(T('Create note for this date'),'newnoteforday','secondary')}${btn(T('Create task for this date'),'newtaskforday','secondary')}</div><p class="meta">${T('Calendar note date is not a reminder.')}</p>`;
- return page('Calendar',`${viewTabs}<div class="calendarhead"><h2>${E(headerTitle)}</h2>${ib('back','monthprev',data.prefs.calendarView==='month'?'Previous month':'Previous week')}${ib('chevron','monthnext',data.prefs.calendarView==='month'?'Next month':'Next week')}</div><div class="calendargrid">${grid}</div><div class="calendar-legend"><span><i class="cal-dot"></i>${T('Notes')}</span><span><i class="cal-dot task"></i>${T('Tasks')}</span></div><div class="sep"></div>${details}`,'','calendar',`<button class="fab" data-act="newtaskforday" aria-label="${E(T('Create task for this date'))}">${icon('plus')}</button>`);
+ const details=`<div class="cal-details"><div class="sectionhead"><h2>${E(formatUserDate(selected))}</h2></div><h3>${T('Notes for this day')} · ${notesOnDay.length}</h3>${notesOnDay.map(n=>noteRow(n)).join('')||`<p class="meta">${T('No notes linked to this day')}</p>`}<h3>${T('Tasks for this day')} · ${tasksOnDay.length}</h3>${tasksOnDay.map(taskRow).join('')||`<p class="meta">${T('No tasks for this day')}</p>`}</div><p class="meta">${T('Calendar note date is not a reminder.')}</p>`;
+ return page('Calendar',`${viewTabs}<div class="calendarhead"><h2>${E(headerTitle)}</h2>${ib('back','monthprev',data.prefs.calendarView==='month'?'Previous month':'Previous week')}${ib('chevron','monthnext',data.prefs.calendarView==='month'?'Next month':'Next week')}</div><div class="calendargrid">${grid}</div><div class="calendar-legend"><span><i class="cal-dot"></i>${T('Notes')}</span><span><i class="cal-dot task"></i>${T('Tasks')}</span></div><div class="sep"></div>${details}`,'','calendar',`<div class="v098-fab-wrap v099-calendar-fab" id="calendarQuick099">${calendarQuickOpen099?`<div class="v098-quick-menu" id="calendarQuickMenu099" role="menu" aria-label="${E(isRU()?'Создать':'Create')}">
+  <button role="menuitem" data-act="calendarcreate099" data-kind="note">${icon('note')}${isRU()?'Заметка':'Note'}</button>
+  <button role="menuitem" data-act="calendarcreate099" data-kind="task">${icon('checklist')}${isRU()?'Задача':'Task'}</button>
+  <button role="menuitem" data-act="calendarcreate099" data-kind="chat">${icon('chat')}${isRU()?'AI-чат':'AI chat'}</button>
+ </div>`:''}<button class="fab" data-act="calendarquick099" aria-expanded="${calendarQuickOpen099}" aria-controls="calendarQuickMenu099" aria-label="${E(isRU()?'Создать':'Create')}">${icon(calendarQuickOpen099?'close':'plus')}</button></div>`);
 }
 function more(){
  const group=(title,rows)=>`<section class="more-group"><h2>${T(title)}</h2>${rows.map(([k,t,d,r])=>row(k,t,d,'goto',`data-route="${r}"`)).join('')}</section>`;
@@ -2166,6 +2180,59 @@ window.NotepadDemo.androidBack=function(){if(homeQuickOpen098&&route.name==='hom
 window.NotepadDemo.version=V098;
 window.NotepadDemo.homeDashboardVersion=V098;
 render();
+})();
+</script>
+
+<script>
+/* v0.9.9: indexed note calendar + unified contextual '+' on Calendar.
+   No schema migration or new data service. */
+(function(){
+ 'use strict';
+ const V099='0.9.9';
+ const oldNewChat099=actions.newchat;
+ // Ordinary task creation starts on today, not on a calendar day selected earlier.
+ actions.newtask=()=>nav('task',{date:localDate()});
+ // Make the chosen date persistent BEFORE the editor first renders.
+ actions.newnoteforday=()=>{
+   const chosen=validISODate(calendarDay)?calendarDay:localDate();
+   const created=now();
+   const n={id:uid('n'),title:'',body:'',category:'',day:chosen,created,updated:created,rev:1};
+   if(!transaction(()=>data.notes.unshift(n)))return;
+   nav('editor',{id:n.id});editing=true;render();
+   requestAnimationFrame(()=>document.querySelector('#noteBody')?.focus());
+ };
+
+ actions.calendarquick099=()=>{
+   calendarQuickOpen099=!calendarQuickOpen099;
+   render();
+   if(calendarQuickOpen099)requestAnimationFrame(()=>document.querySelector('#calendarQuickMenu099 button')?.focus());
+ };
+ actions.calendarcreate099=d=>{
+   calendarQuickOpen099=false;
+   if(d.kind==='note')return actions.newnoteforday();
+   if(d.kind==='task')return actions.newtaskforday();
+   if(d.kind==='chat')return oldNewChat099();
+   render();
+ };
+ document.addEventListener('click',e=>{
+   if(calendarQuickOpen099&&route.name==='calendar'&&!e.target.closest('#calendarQuick099'))calendarQuickOpen099=false;
+ },true);
+ document.addEventListener('keydown',e=>{
+   if(e.key==='Escape'&&calendarQuickOpen099&&route.name==='calendar'){
+     calendarQuickOpen099=false;render();e.stopImmediatePropagation();e.preventDefault();
+   }
+ },true);
+ const oldAndroidBack099=window.NotepadDemo.androidBack;
+ window.NotepadDemo.androidBack=function(){
+   if(calendarQuickOpen099&&route.name==='calendar'){
+     calendarQuickOpen099=false;render();return true;
+   }
+   return oldAndroidBack099();
+ };
+ window.NotepadDemo.version=V099;
+ window.NotepadDemo.calendarUnifiedVersion=V099;
+ window.NotepadDemo.calendarNoteDay099=calendarNoteDay099;
+ render();
 })();
 </script>
 </body>
