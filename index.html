@@ -1891,6 +1891,7 @@ drawSheet=function(){
  '<p class="v096-sheet-note" data-no-i18n>'+item+'</p>'+
  '<div class="v096-fast">'+[['15',tr('Через 15 мин','In 15 minutes')],['30',tr('Через 30 мин','In 30 minutes')],['today',tr('Сегодня','Today')],['tomorrow',tr('Завтра','Tomorrow')]].map(([key,label])=>'<button data-act="quicktime096" data-value="'+key+'">'+label+'</button>').join('')+'</div>'+
  '<div class="v096-datetime"><div><label for="reminderDate">'+tr('Дата','Date')+'</label><input class="input" type="date" id="reminderDate" value="'+E(date)+'"></div><div><label for="reminderTime">'+tr('Время','Time')+'</label><input class="input" type="time" id="reminderTime" value="'+E(tm)+'"></div></div>'+
+ '<label class="v096-reminder-options"><span>'+tr('На весь день','All day')+'</span><input type="checkbox" id="reminderAllDay096" '+(n.reminder?.allDay?'checked':'')+'></label>'+
  '<label class="v096-reminder-options"><span>'+tr('Повторять','Repeat')+'</span><select id="reminderRepeat">'+['Never','Daily','Weekly','Monthly'].map(v=>'<option '+(v===repeat?'selected':'')+' value="'+v+'">'+({Never:tr('Никогда','Never'),Daily:tr('Каждый день','Daily'),Weekly:tr('Каждую неделю','Weekly'),Monthly:tr('Каждый месяц','Monthly')}[v])+'</option>').join('')+'</select></label>'+
  '<div class="v096-pinshade"><div><strong>'+tr('Закрепить в шторке','Pin in notification shade')+'</strong><span>'+tr('Быстрый доступ к заметке','Quick access to this note')+(native?'':' · DEMO')+'</span></div><button data-act="pinshade096" data-id="'+E(n.id)+'" id="pinshade096" aria-label="'+tr('Закрепить в шторке','Pin in shade')+'">'+(native&&window.NotepadAndroid?.isNotePinned?.(n.id)?tr('Убрать','Unpin'):tr('Закрепить','Pin'))+'</button></div>'+
  '<p class="v096-sheet-note">'+(native?tr('Android: нужны разрешённые уведомления. Срабатывание может задержаться системой. Повторения пока в DEMO.','Android: notifications permission required. Delivery may be delayed. Repeats are DEMO for now.'):tr('Веб-версия: напоминание DEMO, системных уведомлений нет.','Web version: reminder DEMO, no system notifications.'))+'</p>'+
@@ -1901,6 +1902,7 @@ drawSheet=function(){
 actions.quicktime096=d=>{
  const da=$('#reminderDate'),tm=$('#reminderTime');if(!da||!tm)return;
  let t=new Date();let date='';
+ const all=$('#reminderAllDay096');if(all)all.checked=false;
  if(d.value==='today'||d.value==='tomorrow'){if(d.value==='tomorrow')t.setDate(t.getDate()+1);date=localDate(t);if(d.value==='today'&&date===localDate()&&tm.value<localTimeNow096())tm.value=localTimePlus096(60);}
  else{t=new Date(Date.now()+Number(d.value)*60000);date=localDate(t);tm.value=[t.getHours(),t.getMinutes()].map(x=>String(x).padStart(2,'0')).join(':')}
  da.value=date;
@@ -1921,14 +1923,15 @@ actions.savereminder=d=>{
  if(!n||!date||!time)return toast(tr('Укажи дату и время','Choose date and time'));
  const epoch=new Date(date+'T'+time+':00').getTime();
  if(!Number.isFinite(epoch)||epoch<Date.now()-5000)return toast(tr('Укажи время в будущем','Choose a future time'));
- const repeat=$('#reminderRepeat')?.value||'Never';
+ const repeat=$('#reminderRepeat')?.value||'Never',allDay=!!$('#reminderAllDay096')?.checked;
  if(!validISODate(date)||!validLocalTime(time,true))return;
- if(!transaction(()=>{n.reminder={date,time,repeat};n.updated=now()}))return;
+ if(!transaction(()=>{n.reminder={date,time,repeat,allDay};n.updated=now()}))return;
  closeSheet();render();
- if(native096()&&repeat==='Never'){
+ if(native096()){try{window.NotepadAndroid.cancelReminder(n.id)}catch{}}
+ if(native096()&&repeat==='Never'&&!allDay){
   try{window.NotepadAndroid.scheduleReminder(n.id,n.title||tr('Без названия','Untitled note'),n.body.slice(0,150),epoch);toast(tr('Напоминание сохранено. Проверь разрешение Android.','Reminder saved; check Android notifications permission.'))}
   catch(e){toast(tr('Сохранено локально, но Android-уведомление не настроено','Saved locally, but native notification was not scheduled'))}
- } else toast(native096()?tr('Повтор сохранён как DEMO, без системного повтора','Repeat is DEMO only'):tr('Напоминание сохранено · DEMO','Reminder saved · DEMO'));
+ } else toast(allDay?tr('Дата сохранена: весь день, без сигнала по времени','All-day date saved without timed alert'):native096()?tr('Повтор сохранён как DEMO, без системного повтора','Repeat is DEMO only'):tr('Напоминание сохранено · DEMO','Reminder saved · DEMO'));
 };
 const prevRemove096=actions.removereminder;
 actions.removereminder=d=>{if(native096())try{window.NotepadAndroid.cancelReminder(d.id)}catch{};prevRemove096(d)};
