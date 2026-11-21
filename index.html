@@ -1813,5 +1813,129 @@ window.NotepadDemo.compactActionsVersion=V095;
 render();
 })();
 </script>
+<style id="v096-styles">
+/* v0.9.6: selection replaces main navigation, one action surface */
+#app:has(.v096-bulkbar) .nav{display:none!important}
+.v096-bulkbar{height:76px;min-height:76px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:2px;padding:5px 7px max(4px,env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--surface);position:relative;z-index:5}
+.v096-bulkbar button{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;min-width:0;padding:4px 2px;color:var(--accent);font-size:11px;font-weight:600;line-height:1.15;text-align:center}
+.v096-bulkbar svg{height:23px;width:23px}.v096-bulkbar button:disabled{opacity:.4}
+.v096-bulkbar .v096-danger{color:var(--danger)}
+#app:has(.v096-bulkbar) .content{padding-bottom:12px}
+.v096-note-reminder{display:inline-flex;align-items:center;gap:4px;max-width:100%;color:var(--accent);font-size:11px;font-weight:650;white-space:nowrap}
+.v096-note-reminder svg{height:13px;width:13px}
+.note-row-meta{display:flex!important;align-items:center;gap:7px;flex-wrap:wrap;white-space:normal!important}
+.notes-compact .note-row-meta{display:flex!important}
+.notes-tiles .note-row-meta{padding-right:10px;margin-top:10px!important}
+.notes-comfortable .note-row-meta{padding-right:12px}
+.notes-comfortable .note-row-main,.notes-tiles .note-row-main{padding-right:34px}
+.notes-comfortable .note-open>.small-icon,.notes-tiles .note-open>.small-icon,.notes-compact .note-open>.small-icon{position:absolute;right:57px;top:9px;color:var(--accent);opacity:.86;z-index:1}
+.note-card .note-more{right:2px;top:3px;bottom:auto;align-self:flex-start;width:44px;min-width:44px;height:44px}
+.notes-compact .note-more{position:absolute;right:1px;top:5px}
+.notes-compact .note-row-main{padding-right:43px}
+.v096-reminder-wrap{display:grid;gap:12px}.v096-fast{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.v096-fast button{background:var(--soft);border:1px solid var(--line);border-radius:11px;padding:10px 4px;font-weight:650;font-size:12px;min-height:42px}
+.v096-fast button:focus-visible{outline:2px solid var(--accent)}
+.v096-datetime{display:grid;grid-template-columns:minmax(0,1fr) 126px;gap:8px}
+.v096-datetime label{display:block;font-size:12px;font-weight:650;color:var(--muted);margin-bottom:5px}
+.v096-datetime .input{width:100%;font-size:14px;padding:9px 8px}
+.v096-reminder-options{display:flex;justify-content:space-between;align-items:center;gap:8px;border-bottom:1px solid var(--line);padding:9px 0;font-size:13px}
+.v096-reminder-options select{max-width:145px;background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 3px;font-size:12px}
+.v096-pinshade{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.v096-pinshade span{display:block;font-size:12px;color:var(--muted);line-height:1.4}
+.v096-pinshade button{background:var(--tint);border:1px solid var(--line);border-radius:10px;min-width:75px;padding:9px;font-size:12px;font-weight:700}
+.v096-remind-foot{display:flex;gap:7px;align-items:center}
+.v096-remind-foot button{flex:1;min-height:44px;border:1px solid var(--line);border-radius:11px;font-size:13px;font-weight:700}
+.v096-remind-foot button:last-child{background:var(--accent);color:var(--bg)}
+.v096-sheet-note{font-size:12px;color:var(--muted);margin:2px 0}
+@media(max-width:360px){.v096-datetime{grid-template-columns:minmax(0,1fr) 111px}.v096-bulkbar{height:73px}.v096-bulkbar button{font-size:10px}}
+</style>
+<script>
+/* Notepad AI Agent v0.9.6: Contextual single/multi selection, visible reminder,
+   compact reminder panel, optional Android notification/status-shade bridge.
+   Preserve v2 local schema, existing JSON backups, all five tabs. */
+(function(){
+'use strict';
+const V096='0.9.6', tr=(ru,en)=>isRU()?ru:en;
+function native096(){return window.NotepadAndroid&&typeof window.NotepadAndroid.pinNote==='function'&&typeof window.NotepadAndroid.scheduleReminder==='function'}
+function notifyGrant096(){return native096()&&typeof window.NotepadAndroid.canNotify==='function'&&window.NotepadAndroid.canNotify()}
+function badge096(n){if(!n.reminder?.date)return '';const d=E(dateLabel(n.reminder.date)),t=n.reminder.allDay?'':n.reminder.time?' · '+E(n.reminder.time):'';return '<span class="v096-note-reminder" title="'+E(tr('Напоминание','Reminder'))+'">'+icon('bell')+d+t+'</span>'}
+const previousRow096=noteRow;
+noteRow=function(n,q=''){
+ let html=previousRow096(n,q);
+ if(n.reminder?.date)html=html.replace(/(<span class="tagname"[^>]*>[\s\S]*?<\/span>)/,(_,m)=>m+badge096(n));
+ return html;
+};
+const previousNotes096=notes;
+notes=function(){
+ let h=previousNotes096();if(!selectMode)return h;
+ const n=selectedNotes().length,one=n===1;
+ const defs=one?[
+  ['pin','batchpin',tr('Закрепить','Pin')],['tag','batchcategory',tr('Категория','Category')],
+  ['bell','batchreminder096',tr('Напомнить','Reminder')],['more','batchmore',tr('Ещё','More')]
+ ]:[['archive','batcharchive',tr('В архив','Archive')],['trash','batchtrash',tr('В корзину','Trash')],['tag','batchcategory',tr('Категория','Category')],['more','batchmore',tr('Ещё','More')]];
+ const footer='<div class="v096-bulkbar" aria-label="'+E(tr('Действия с выделенными заметками','Selected note actions'))+'">'+defs.map(([ico,act,label])=>'<button data-act="'+act+'" '+(n?'':'disabled')+' aria-label="'+E(label)+'">'+icon(ico)+'<span>'+E(label)+'</span></button>').join('')+'</div>';
+ h=h.replace(/<div class="bulkbar"[^>]*>[\s\S]*?<\/div>/,footer);
+ h=h.replace(/<nav class="nav"[^>]*>[\s\S]*?<\/nav>/,'');
+ return h;
+};
+actions.batchreminder096=()=>{const picked=selectedNotes();if(picked.length!==1)return;const id=picked[0].id;selection.clear();selectMode=false;render();openSheet('reminder',{id})};
+const previousDraw096=drawSheet;
+drawSheet=function(){
+ previousDraw096();if(!sheet||sheet.type!=='reminder')return;
+ const n=note(sheet.id);if(!n)return;
+ const panel=$('#overlay .sheet');if(!panel)return;
+ const item=E(n.title||tr('Без названия','Untitled note'));
+ const date=n.reminder?.date||tomorrow(),tm=n.reminder?.time||'10:00',repeat=n.reminder?.repeat||'Never';
+ const native=native096();
+ const repl='<div class="v096-reminder-wrap">'+
+ '<p class="v096-sheet-note" data-no-i18n>'+item+'</p>'+
+ '<div class="v096-fast">'+[['15',tr('Через 15 мин','In 15 minutes')],['30',tr('Через 30 мин','In 30 minutes')],['today',tr('Сегодня','Today')],['tomorrow',tr('Завтра','Tomorrow')]].map(([key,label])=>'<button data-act="quicktime096" data-value="'+key+'">'+label+'</button>').join('')+'</div>'+
+ '<div class="v096-datetime"><div><label for="reminderDate">'+tr('Дата','Date')+'</label><input class="input" type="date" id="reminderDate" value="'+E(date)+'"></div><div><label for="reminderTime">'+tr('Время','Time')+'</label><input class="input" type="time" id="reminderTime" value="'+E(tm)+'"></div></div>'+
+ '<label class="v096-reminder-options"><span>'+tr('Повторять','Repeat')+'</span><select id="reminderRepeat">'+['Never','Daily','Weekly','Monthly'].map(v=>'<option '+(v===repeat?'selected':'')+' value="'+v+'">'+({Never:tr('Никогда','Never'),Daily:tr('Каждый день','Daily'),Weekly:tr('Каждую неделю','Weekly'),Monthly:tr('Каждый месяц','Monthly')}[v])+'</option>').join('')+'</select></label>'+
+ '<div class="v096-pinshade"><div><strong>'+tr('Закрепить в шторке','Pin in notification shade')+'</strong><span>'+tr('Быстрый доступ к заметке','Quick access to this note')+(native?'':' · DEMO')+'</span></div><button data-act="pinshade096" data-id="'+E(n.id)+'" id="pinshade096" aria-label="'+tr('Закрепить в шторке','Pin in shade')+'">'+(native&&window.NotepadAndroid?.isNotePinned?.(n.id)?tr('Убрать','Unpin'):tr('Закрепить','Pin'))+'</button></div>'+
+ '<p class="v096-sheet-note">'+(native?tr('Android: нужны разрешённые уведомления. Срабатывание может задержаться системой. Повторения пока в DEMO.','Android: notifications permission required. Delivery may be delayed. Repeats are DEMO for now.'):tr('Веб-версия: напоминание DEMO, системных уведомлений нет.','Web version: reminder DEMO, no system notifications.'))+'</p>'+
+ '<div class="v096-remind-foot"><button data-act="closesheet">'+tr('Отмена','Cancel')+'</button><button data-act="savereminder" data-id="'+E(n.id)+'">'+tr('Сохранить','Save')+'</button></div>'+
+ (n.reminder?'<button class="textbtn full" data-act="removereminder" data-id="'+E(n.id)+'">'+tr('Убрать напоминание','Remove reminder')+'</button>':'')+'</div>';
+ const head=panel.querySelector('.sheethead');if(head){head.querySelector('h2').textContent=tr('Напоминание','Reminder');while(head.nextSibling)head.nextSibling.remove();head.insertAdjacentHTML('afterend',repl)}
+};
+actions.quicktime096=d=>{
+ const da=$('#reminderDate'),tm=$('#reminderTime');if(!da||!tm)return;
+ let t=new Date();let date='';
+ if(d.value==='today'||d.value==='tomorrow'){if(d.value==='tomorrow')t.setDate(t.getDate()+1);date=localDate(t);if(d.value==='today'&&date===localDate()&&tm.value<localTimeNow096())tm.value=localTimePlus096(60);}
+ else{t=new Date(Date.now()+Number(d.value)*60000);date=localDate(t);tm.value=[t.getHours(),t.getMinutes()].map(x=>String(x).padStart(2,'0')).join(':')}
+ da.value=date;
+};
+function localTimeNow096(){const d=new Date();return [d.getHours(),d.getMinutes()].map(x=>String(x).padStart(2,'0')).join(':')}
+function localTimePlus096(minutes){const d=new Date(Date.now()+minutes*60000);return [d.getHours(),d.getMinutes()].map(x=>String(x).padStart(2,'0')).join(':')}
+actions.pinshade096=d=>{
+ const n=note(d.id);if(!n)return;
+ if(!native096()){toast(tr('В браузере закрепление в шторке недоступно','Notification shade unavailable in browser'));return}
+ const pinned=window.NotepadAndroid.isNotePinned(n.id);
+ if(pinned){window.NotepadAndroid.unpinNote(n.id);toast(tr('Убрано из шторки','Unpinned from shade'));}
+ else{window.NotepadAndroid.pinNote(n.id,n.title||tr('Без названия','Untitled note'),n.body.slice(0,150));toast(tr('Запрошено закрепление. Проверь разрешения уведомлений.','Requested pin; check notification permission.'));}
+ const b=$('#pinshade096');if(b)b.textContent=pinned?tr('Закрепить','Pin'):tr('Убрать','Unpin');
+};
+const prevSave096=actions.savereminder;
+actions.savereminder=d=>{
+ const n=note(d.id),date=$('#reminderDate')?.value,time=$('#reminderTime')?.value;
+ if(!n||!date||!time)return toast(tr('Укажи дату и время','Choose date and time'));
+ const epoch=new Date(date+'T'+time+':00').getTime();
+ if(!Number.isFinite(epoch)||epoch<Date.now()-5000)return toast(tr('Укажи время в будущем','Choose a future time'));
+ const repeat=$('#reminderRepeat')?.value||'Never';
+ if(!validISODate(date)||!validLocalTime(time,true))return;
+ if(!transaction(()=>{n.reminder={date,time,repeat};n.updated=now()}))return;
+ closeSheet();render();
+ if(native096()&&repeat==='Never'){
+  try{window.NotepadAndroid.scheduleReminder(n.id,n.title||tr('Без названия','Untitled note'),n.body.slice(0,150),epoch);toast(tr('Напоминание сохранено. Проверь разрешение Android.','Reminder saved; check Android notifications permission.'))}
+  catch(e){toast(tr('Сохранено локально, но Android-уведомление не настроено','Saved locally, but native notification was not scheduled'))}
+ } else toast(native096()?tr('Повтор сохранён как DEMO, без системного повтора','Repeat is DEMO only'):tr('Напоминание сохранено · DEMO','Reminder saved · DEMO'));
+};
+const prevRemove096=actions.removereminder;
+actions.removereminder=d=>{if(native096())try{window.NotepadAndroid.cancelReminder(d.id)}catch{};prevRemove096(d)};
+window.NotepadDemo.openExistingNote096=id=>{const n=note(String(id));if(n&&!n.trashed)nav('editor',{id:n.id},true);else nav('notes',{},true)};
+window.NotepadDemo.version=V096;window.NotepadDemo.nativeReminders096=native096();
+render();
+})();
+</script>
 </body>
 </html>
