@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony R05 0.9.7</title>
+<meta name="theme-color" content="#fafaf7"><title>Notepad AI · Native Harmony R06 0.9.8</title>
 <style>
 :root{--bg:#fafaf7;--surface:#fff;--soft:#f0f3ef;--text:#202823;--muted:#66716b;--line:#e0e5df;--accent:#216d5b;--on:#fff;--tint:#e8f2ec;--danger:#b53636;--dangerbg:#fff0ed;--shadow:0 18px 60px #172e201a;--nav:72px;color-scheme:light}
 [data-theme=dark]{--bg:#151b18;--surface:#1c2420;--soft:#252f29;--text:#ecf1ed;--muted:#a3afa6;--line:#334037;--accent:#9bd5bd;--on:#14261d;--tint:#243c30;--danger:#ffa59d;--dangerbg:#3c2322;--shadow:0 18px 60px #0005;color-scheme:dark}
@@ -1880,6 +1880,67 @@ render();
 .v096-remind-foot button:last-child{background:var(--accent);color:var(--bg)}
 .v096-sheet-note{font-size:12px;color:var(--muted);margin:2px 0}
 @media(max-width:360px){.v096-datetime{grid-template-columns:minmax(0,1fr) 111px}.v096-bulkbar{height:73px}.v096-bulkbar button{font-size:10px}}
+
+/* Georgina Games v0.9.8 Home Dashboard R06: real app-data sections, no fictitious content. */
+.v098-home{display:flex;flex-direction:column;gap:12px;padding:6px 0 18px;min-width:0}
+.v098-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.v098-stat{min-width:0;min-height:84px;border:1px solid var(--line);background:var(--surface);border-radius:17px;padding:10px 9px;display:flex;flex-direction:column;justify-content:center;text-align:left;gap:4px}
+.v098-stat .v098-stat-head{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:720;min-width:0;white-space:nowrap}
+.v098-stat svg{width:18px;height:18px;flex:none}.v098-stat .v098-stat-head span{overflow:hidden;text-overflow:ellipsis}
+.v098-stat .v098-stat-count{font-size:25px;line-height:1.15;font-weight:780;padding-left:24px;font-variant-numeric:tabular-nums}
+.v098-stat:nth-child(1){background:color-mix(in srgb,var(--surface) 91%,#9265b5 9%)}
+.v098-stat:nth-child(2){background:color-mix(in srgb,var(--surface) 92%,#6b97ae 8%)}
+.v098-stat:nth-child(3){background:color-mix(in srgb,var(--surface) 92%,#72a58c 8%)}
+.v098-section{background:var(--surface);border:1px solid var(--line);border-radius:19px;padding:13px;min-width:0}
+.v098-section-head{display:flex;align-items:center;gap:7px;min-height:42px}
+.v098-section-head>.v098-section-icon{width:21px;height:21px;flex:none;color:var(--text)}
+.v098-section-head h2{flex:1;min-width:0;font-size:16px;font-weight:760;line-height:1.24;letter-spacing:-.12px}
+.v098-section-head button{display:inline-flex;align-items:center;gap:2px;min-height:42px;padding:4px 0 4px 5px;white-space:nowrap;color:var(--text);font-size:11.5px;font-weight:690}
+.v098-section-head button svg{width:16px;height:16px}
+.v098-day{font-size:12px;color:var(--muted);margin:0 0 7px 29px}
+.v098-empty{font-size:12px;color:var(--muted);line-height:1.55;padding:7px 2px 10px}
+.v098-empty-row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.v098-mini-action{min-height:38px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);border-radius:11px;padding:5px 10px;color:var(--text);font-weight:700;font-size:12px;white-space:nowrap}
+.v098-mini-action svg{width:16px;height:16px}
+.v098-section .row{min-height:52px;padding:7px 0}.v098-section .row:last-child{border-bottom:none}
+.v098-section .rowicon{width:25px}.v098-section .row .title{font-size:13px}.v098-section .row .desc{font-size:11px}
+.v098-section .note-card{border:1px solid var(--line)!important;background:transparent!important;border-radius:12px!important;min-height:68px;margin:3px 0 0;overflow:hidden}
+.v098-section .note-card .note-open{min-height:68px!important;padding:9px 0!important}
+.v098-section .note-row-title{font-size:13px!important}.v098-section .note-row-preview{font-size:11px!important}
+.v098-section .note-more{opacity:1!important;min-height:44px;min-width:44px;display:grid;place-items:center}
+.v098-section .note-accent{margin-top:9px;margin-bottom:9px}
+.v098-chat-empty{min-height:58px;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;gap:12px;padding:9px 10px;margin-top:4px}
+.v098-chat-empty>span{width:37px;height:37px;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--tint);color:var(--text)}
+.v098-chat-empty>span svg{width:21px;height:21px}
+.v098-chat-empty button{flex:1;min-width:0;text-align:left;min-height:45px}
+.v098-chat-empty strong{display:block;font-size:13px}.v098-chat-empty small{display:block;font-size:11px;line-height:1.4;color:var(--muted)}
+.v098-chat-empty .v098-chat-open{flex:none;width:38px;height:38px;min-height:38px;border-radius:50%;background:var(--soft);color:var(--text);display:grid;place-items:center}
+.v098-chat-empty .v098-chat-open svg{width:16px;height:16px}
+.v098-ai-bar{border:1px solid var(--line);background:linear-gradient(112deg,var(--surface),var(--tint));border-radius:19px;padding:13px;display:grid;gap:9px}
+.v098-ai-head{display:flex;gap:8px;align-items:center;font-size:15px;font-weight:740}
+.v098-ai-head>svg{width:22px;height:22px}.v098-ai-demo{background:var(--soft);border-radius:9px;font-size:10px;padding:4px 7px;color:var(--text);font-weight:700}
+.v098-ai-bar p{font-size:12px;color:var(--muted);line-height:1.45}
+.v098-ai-bar button{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;font-size:13px;font-weight:700;width:max-content;max-width:100%;min-height:41px}
+.v098-ai-bar button svg{width:18px;height:18px}
+.v098-fab-wrap{position:absolute;z-index:12;right:17px;bottom:calc(var(--nav) + 13px);display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none}
+.v098-fab-wrap>*{pointer-events:auto}.v098-fab-wrap .fab{position:static!important;right:auto!important;bottom:auto!important;width:56px;height:56px;transform:none}
+.v098-quick-menu{display:flex;flex-direction:column;min-width:197px;padding:7px;background:var(--surface);border:1px solid var(--line);border-radius:17px;box-shadow:0 12px 32px #0006;gap:3px}
+.v098-quick-menu button{display:flex;gap:10px;align-items:center;text-align:left;min-height:47px;padding:9px;border-radius:11px;color:var(--text);font-size:13px;font-weight:660}
+.v098-quick-menu button:focus-visible,.v098-quick-menu button:hover{background:var(--soft)}
+.v098-quick-menu svg{width:20px;height:20px}
+html[data-theme="black"] .v098-stat{background:#232323!important;border-color:#414141}
+html[data-theme="black"] .v098-section,html[data-theme="black"] .v098-ai-bar{background:#252525;border-color:#404040}
+html[data-theme="black"] .v098-ai-bar{background:linear-gradient(110deg,#252525,#29262e)}
+html[data-theme="black"] .v098-chat-empty{background:#222;border-color:#3e3e3e}
+html[data-theme="black"] .v098-chat-empty>span{background:#38313c}
+html[data-theme="black"] .v098-quick-menu{background:#282828;border-color:#474747}
+html[data-theme="black"] .v098-stat:nth-child(1){background:#29242d!important;border-color:#4e3d5a!important}
+html[data-theme="black"] .v098-stat:nth-child(2){background:#22282c!important;border-color:#3b4c59!important}
+html[data-theme="black"] .v098-stat:nth-child(3){background:#222a24!important;border-color:#38513d!important}
+html[data-theme="black"] .v098-fab-wrap .fab{background:#9773b7!important;color:#fff!important;box-shadow:0 6px 17px #0009!important}
+.screen:has(.v098-home)>.top h1:before{content:'✎';display:inline-grid;place-items:center;width:37px;height:37px;margin-right:10px;border-radius:11px;background:var(--tint);color:var(--text);font-size:24px;vertical-align:middle}
+@media(max-width:350px){.v098-overview{gap:5px}.v098-stat{padding:8px 6px;min-height:76px}.v098-stat .v098-stat-head{font-size:10px;gap:4px}.v098-stat svg{width:15px;height:15px}.v098-stat .v098-stat-count{font-size:23px;padding-left:19px}.v098-section{padding:11px}.v098-section-head h2{font-size:14px}.v098-section-head button{font-size:11px}.v098-home{gap:10px}}
+
 </style>
 <script>
 /* Notepad AI Agent v0.9.6: Contextual single/multi selection, visible reminder,
@@ -2050,6 +2111,60 @@ applyTheme=function(){
 };
 window.NotepadDemo.version=V097;
 window.NotepadDemo.categoryToggleVersion=V097;
+render();
+})();
+</script>
+<script>
+/* Notepad AI Agent v0.9.8 · Home Dashboard R06. Grounded in actual local tasks, notes, chats. */
+(function(){
+'use strict';
+const V098='0.9.8';
+const tr098=(ru,en)=>isRU()?ru:en;
+let homeQuickOpen098=false;
+const oldHome098=home;
+const oldNewChat098=actions.newchat;
+// Existing local data, not fabricated counters or mock conversations.
+function liveChats098(){return data.chats.filter(c=>Array.isArray(c.messages)&&c.messages.length>0)}
+function homeHead098(iconName,title,link,routeName,root){return `<div class="v098-section-head"><span class="v098-section-icon">${icon(iconName)}</span><h2>${title}</h2><button data-act="${root?'root':'goto'}" data-route="${routeName}">${link} ${icon('chevron')}</button></div>`}
+function stat098(iconName,label,count,routeName,root){return `<button class="v098-stat" data-act="${root?'root':'goto'}" data-route="${routeName}" aria-label="${E(label+': '+count)}"><span class="v098-stat-head">${icon(iconName)}<span>${label}</span></span><strong class="v098-stat-count">${count}</strong></button>`}
+home=function(){
+  const activeTasks=data.tasks.filter(t=>!t.trashed&&!t.done);
+  const todays=data.tasks.filter(t=>!t.trashed&&!t.done&&t.date===today).slice(0,2);
+  const n=activeNotes();const chats=liveChats098();
+  const dateString=new Date().toLocaleDateString(isRU()?'ru-RU':'en-US',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  const emptyToday=`<div class="v098-empty-row"><div class="v098-empty">${tr098('На сегодня нет задач.','No tasks for today.')}<br>${tr098('Можно создать новую.','You can add one.')}</div><button class="v098-mini-action" data-act="newtask">${icon('plus')}${tr098('Добавить задачу','Add task')}</button></div>`;
+  const emptyNotes=`<div class="v098-empty-row"><div class="v098-empty">${tr098('Заметок пока нет.','No notes yet.')}</div><button class="v098-mini-action" data-act="newnote">${icon('plus')}${tr098('Новая заметка','New note')}</button></div>`;
+  const emptyChats=`<div class="v098-chat-empty"><span>${icon('chat')}</span><button data-act="newchat"><strong>${tr098('Новый чат','New chat')}</strong><small>${tr098('Начните разговор с AI-помощником · DEMO','Start a conversation with AI · DEMO')}</small></button><button class="v098-chat-open" data-act="newchat" aria-label="${E(tr098('Создать AI-чат','Start AI chat'))}">${icon('chevron')}</button></div>`;
+  const content=`<div class="v098-home" data-v098="ready">
+    <div class="v098-overview" aria-label="${E(tr098('Обзор','Overview'))}">
+      ${stat098('checklist',tr098('Задачи','Tasks'),activeTasks.length,'tasks',false)}
+      ${stat098('note',tr098('Заметки','Notes'),n.length,'notes',true)}
+      ${stat098('chat',tr098('AI-чаты','AI chats'),chats.length,'history',false)}
+    </div>
+    <section class="v098-section">${homeHead098('calendar',tr098('Сегодня','Today'),tr098('Все задачи','All tasks'),'tasks',false)}<div class="v098-day">${E(dateString)}</div>${todays.length?todays.map(taskRow).join(''):emptyToday}</section>
+    <section class="v098-section">${homeHead098('note',tr098('Недавние заметки','Recent notes'),tr098('Все заметки','All notes'),'notes',true)}${n.length?n.slice(0,2).map(noteRow).join(''):emptyNotes}</section>
+    <section class="v098-section">${homeHead098('ai',tr098('Последние AI-чаты','Recent AI chats'),tr098('Все чаты','All chats'),'history',false)}${chats.length?chats.slice(0,2).map(chatRow).join(''):emptyChats}</section>
+    <section class="v098-ai-bar"><div class="v098-ai-head">${icon('ai')}<span>${tr098('AI-помощник','AI Assistant')}</span><span class="v098-ai-demo">DEMO</span></div><p>${tr098('Помощь с текстами, идеями и планами. Демонстрационный режим.','Help with texts, ideas and plans. Demo mode only.')}</p><button data-act="root" data-route="ai">${icon('chat')}${tr098('Открыть чат','Open chat')}</button></section>
+  </div>`;
+  const quick=`<div class="v098-fab-wrap" id="homeQuick098">${homeQuickOpen098?`<div class="v098-quick-menu" id="homeQuickMenu098" role="menu" aria-label="${E(tr098('Быстро создать','Quick create'))}">
+    <button role="menuitem" data-act="homecreate098" data-kind="task">${icon('checklist')}${tr098('Новая задача','New task')}</button>
+    <button role="menuitem" data-act="homecreate098" data-kind="note">${icon('note')}${tr098('Новая заметка','New note')}</button>
+    <button role="menuitem" data-act="homecreate098" data-kind="chat">${icon('chat')}${tr098('Новый AI-чат','New AI chat')}</button>
+  </div>`:''}<button class="fab" data-act="homequick098" aria-expanded="${homeQuickOpen098}" aria-controls="homeQuickMenu098" aria-label="${E(tr098('Быстро создать','Quick create'))}">${icon(homeQuickOpen098?'close':'plus')}</button></div>`;
+  return page('Notepad AI',content,
+    ib('search','search',tr098('Поиск по блокноту','Search notebook'))+
+    ib('settings','goto',tr098('Настройки','Settings'),'data-route="settings"'),
+    'home',quick);
+};
+actions.homequick098=()=>{homeQuickOpen098=!homeQuickOpen098;render();if(homeQuickOpen098)requestAnimationFrame(()=>document.querySelector('.v098-quick-menu button')?.focus())};
+actions.homecreate098=d=>{homeQuickOpen098=false;switch(d.kind){case 'note':return actions.newnote();case 'task':return actions.newtask();case 'chat':return oldNewChat098();default:return render()}};
+// Avoid stale menu on subsequent visits to Home.
+document.addEventListener('click',e=>{if(homeQuickOpen098&&route.name==='home'&&!e.target.closest('#homeQuick098'))homeQuickOpen098=false},true);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&homeQuickOpen098&&route.name==='home'){homeQuickOpen098=false;render();e.stopImmediatePropagation();e.preventDefault()}},true);
+const oldAndroidBack098=window.NotepadDemo.androidBack;
+window.NotepadDemo.androidBack=function(){if(homeQuickOpen098&&route.name==='home'){homeQuickOpen098=false;render();return true}return oldAndroidBack098()};
+window.NotepadDemo.version=V098;
+window.NotepadDemo.homeDashboardVersion=V098;
 render();
 })();
 </script>
